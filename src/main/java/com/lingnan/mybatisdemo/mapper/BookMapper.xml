@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingnan.mybatisdemo.mapper.BookMapper">
+
+
+    <select id="getBooksByCategoryName" parameterType="javafx.beans.property.SimpleStringProperty" resultType="Book">
+        SELECT book.book_name bookName, book.isbn, book.price, book.publish_date publishDate, book.publisher
+        from book WHERE book.category_id IN (
+            SELECT category.id FROM category
+            WHERE category.name LIKE
+                <bind name="pattern" value="'%' + name + '%'"/> #{pattern}
+        )
+    </select>
+
+
+
+    <select id="selectCategoryForBook" parameterType="int" resultType="Category">
+        SELECT id, name FROM category WHERE id = #{categoryId}
+    </select>
+
+    <resultMap id="selectBooks" type="Book">
+        <id column="isbn" property="isbn"/>
+        <result column="book_name" property="bookName"/>
+        <result column="book_price" property="price"/>
+        <result column="publish_date" property="publishDate"/>
+        <result column="publisher" property="publisher"/>
+        <association property="category" column="category_id" select="selectCategoryForBook" />
+    </resultMap>
+
+    <select id="findAllBooks" resultMap="selectBooks">
+        SELECT book.isbn, book.book_name , book.category_id , book.price, book.publish_date , book.publisher
+        FROM book
+    </select>
+
+
+
+
+
+
+
+    <resultMap id="findAllWithCategoryMap" type="Book">
+        <id column="isbn" property="isbn"/>
+        <result column="book_name" property="bookName"/>
+        <result column="book_price" property="price"/>
+        <result column="publish_date" property="publishDate"/>
+        <result column="publisher" property="publisher"/>
+        <association property="category" column="category_id"  javaType="com.lingnan.mybatisdemo.bean.Category">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+        </association>
+    </resultMap>
+
+    <select id="findAllBooksWithCategory" resultMap="findAllWithCategoryMap">
+        SELECT *
+        FROM category, book
+        WHERE category.id = book.category_id
+
+    </select>
+</mapper>

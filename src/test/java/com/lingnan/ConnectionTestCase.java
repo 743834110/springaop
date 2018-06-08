@@ -44,7 +44,7 @@ public class ConnectionTestCase {
         SqlSession session = sessionFactory.openSession();
         CategoryMapper categoryMapper = session.getMapper(CategoryMapper.class);
         List<Category> list = categoryMapper.findAllCategory();
-        System.out.println(list.size());
+        list.forEach(System.out::println);
 
     }
 
@@ -91,4 +91,16 @@ public class ConnectionTestCase {
         books = bookMapper.getBooksByCategoryName(stringProperty);
         books.forEach(System.out::println);
     }
+
+
+    @Test
+    public void testCategoryLeftJoinBooks() throws IOException {
+        InputStream inputStream = Resources.getResourceAsStream("config/mybatis-config.xml");
+        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSession session = sessionFactory.openSession();
+        CategoryMapper categoryMapper = session.getMapper(CategoryMapper.class);
+        List<Category> categories = categoryMapper.searchAllCategoryWithBooks();
+        System.out.println(categories);
+    }
+
 }

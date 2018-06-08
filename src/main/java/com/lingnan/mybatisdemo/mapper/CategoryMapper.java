@@ -34,5 +34,11 @@ public interface CategoryMapper {
      */
     List<Category> searchByName(String name);
 
+    /**
+     * 查询所有分类下所有的书籍信息
+     * @return
+     */
+    List<Category> searchAllCategoryWithBooks();
+
 
 }

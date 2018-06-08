@@ -16,4 +16,13 @@ public interface BookMapper {
      * @return
      */
     public abstract List<Book> getBooksByCategoryName(SimpleStringProperty categoryName);
+
+    List<Book> findAllBooks();
+
+    /**
+     * 查找带有分类信息的书籍
+     * @return
+     */
+    List<Book> findAllBooksWithCategory();
+
 }
