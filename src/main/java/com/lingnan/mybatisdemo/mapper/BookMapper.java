@@ -25,4 +25,13 @@ public interface BookMapper {
      */
     List<Book> findAllBooksWithCategory();
 
+    /**
+     * 通过书籍简要信息查找相关书籍信息
+     * @param book
+     * @return
+     */
+    List<Book> findBookWithBookCondition(Book book);
+
+
+
 }

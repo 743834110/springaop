@@ -5,7 +5,14 @@ import com.lingnan.mybatisdemo.bean.Category;
 import com.lingnan.mybatisdemo.mapper.BookMapper;
 import com.lingnan.mybatisdemo.mapper.CategoryMapper;
 import javafx.beans.property.SimpleStringProperty;
+import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.SqlSource;
+import org.apache.ibatis.parsing.XNode;
+import org.apache.ibatis.scripting.LanguageDriver;
+import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -13,6 +20,10 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class ConnectionTestCase {
@@ -64,8 +75,7 @@ public class ConnectionTestCase {
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = sessionFactory.openSession();
         CategoryMapper categoryMapper = session.getMapper(CategoryMapper.class);
-        categoryMapper.deleteById(3);
-        session.commit();
+        categoryMapper.findAllCategory();
     }
 
     @Test
@@ -92,7 +102,6 @@ public class ConnectionTestCase {
         books.forEach(System.out::println);
     }
 
-
     @Test
     public void testCategoryLeftJoinBooks() throws IOException {
         InputStream inputStream = Resources.getResourceAsStream("config/mybatis-config.xml");
@@ -101,6 +110,12 @@ public class ConnectionTestCase {
         CategoryMapper categoryMapper = session.getMapper(CategoryMapper.class);
         List<Category> categories = categoryMapper.searchAllCategoryWithBooks();
         System.out.println(categories);
+    }
+
+
+    @Test
+    public void connect2() throws ClassNotFoundException, SQLException, IOException {
+
     }
 
 }

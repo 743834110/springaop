@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lingnan.mybatisdemo.mapper.CartMapper">
+    <!-- 为用户新建一个购物车 -->
+    <insert id="insertCart"  parameterType="Cart">
+        <selectKey keyProperty="cartId" resultType="int" order="AFTER">
+            SELECT last_insert_id()
+        </selectKey>
+        INSERT INTO cart
+          VALUES (null, #{userId}, now())
+    </insert>
+
+    <!--  -->
+    <resultMap id="cartMapping" type="Cart">
+        <id column="cart_id" property="cartId"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_date" property="createDate"/>
+    </resultMap>
+
+    <select id="getCustomerCart" resultMap="cartMapping" parameterType="int">
+        SELECT *
+        FROM cart
+        WHERE user_id = #{userId}
+    </select>
+    <!--  -->
+
+
+</mapper>

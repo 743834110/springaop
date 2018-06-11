@@ -37,6 +37,13 @@ public class BookMapperTestCase {
     }
 
     @Test
+    public void findBookWithBookNameLike() throws Exception{
+        Book book = new Book();
+        book.setBookName("a");
+        List<Book> books = this.bookMapper.findBookWithBookCondition(book);
+    }
+
+    @Test
     public void findAllWithCategoryTest(){
         this.bookMapper.findAllBooksWithCategory().forEach(System.out::println);
     }

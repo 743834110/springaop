@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lingnan.mybatisdemo.mapper.CartItemMapper">
+
+    <insert id="insertCartItem" parameterType="CartItem">
+        INSERT INTO cart_item
+        VALUES (null , #{cartId}, #{bookId}, #{count}, now())
+    </insert>
+</mapper>

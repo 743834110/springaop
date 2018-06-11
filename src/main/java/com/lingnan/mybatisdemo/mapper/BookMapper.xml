@@ -34,12 +34,6 @@
         FROM book
     </select>
 
-
-
-
-
-
-
     <resultMap id="findAllWithCategoryMap" type="Book">
         <id column="isbn" property="isbn"/>
         <result column="book_name" property="bookName"/>
@@ -56,6 +50,15 @@
         SELECT *
         FROM category, book
         WHERE category.id = book.category_id
-
     </select>
+
+    <!-- 通过书籍名称查找书籍信息 -->
+    <select id="findBookWithBookCondition" resultType="Book" parameterType="Book">
+        SELECT *
+        FROM book
+        <if test="bookName != null">
+            WHERE book_name LIKE '%' || #{bookName} || '%'
+        </if>
+    </select>
+
 </mapper>

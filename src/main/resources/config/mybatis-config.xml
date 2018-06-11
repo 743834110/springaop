@@ -5,11 +5,13 @@
 <configuration>
 
     <properties resource = "config/jdbc.properties"/>
-
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
     <typeAliases>
-        <!--<package name="com.lingnan.mybatisdemo.bean"/>-->
-        <typeAlias type="com.lingnan.mybatisdemo.bean.Category" alias="Category"/>
-        <typeAlias type="com.lingnan.mybatisdemo.bean.Book" alias="Book"/>
+        <package name="com.lingnan.mybatisdemo.bean"/>
+        <!--<typeAlias type="com.lingnan.mybatisdemo.bean.Category" alias="Category"/>-->
+        <!--<typeAlias type="com.lingnan.mybatisdemo.bean.Book" alias="Book"/>-->
     </typeAliases>
 
     <environments default="development">

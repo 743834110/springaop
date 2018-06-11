@@ -1,12 +1,13 @@
 package com.lingnan.mybatisdemo.bean;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Book {
 
     private String isbn;
     private String bookName;
-    private double price;  //价格要以整数表示
+    private Double price;  //价格要以整数表示
     private Date  publishDate;
     private String publisher;
 
@@ -41,11 +42,11 @@ public class Book {
         this.bookName = bookName;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -79,7 +80,7 @@ public class Book {
                 "isbn='" + isbn + '\'' +
                 ", bookName='" + bookName + '\'' +
                 ", price=" + price +
-                ", publishDate=" + publishDate +
+                ", publishDate=" + new SimpleDateFormat("yyyy-MM-dd").format(publishDate) +
                 ", publisher='" + publisher + '\'' +
                 ", category=" + category +
                 '}';
