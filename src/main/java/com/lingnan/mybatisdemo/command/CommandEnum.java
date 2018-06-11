@@ -11,7 +11,7 @@ public enum CommandEnum {
 
     ONE("common.CommonCommand", "1"),
     TWO("admin.AdminCommand", "2"),
-    THREE("superadmin.SuperCommand", "3");
+    THREE("superadmin.SuperAdminCommand", "3");
 
 
     private String className;

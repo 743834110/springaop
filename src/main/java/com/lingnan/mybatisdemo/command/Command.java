@@ -9,7 +9,11 @@ public abstract class Command {
 
     public String execute(CommandVo commandVo){
         CommandName commandName = this.buildChain();
-        return commandName.handleMessage(commandVo, 1);
+        if (commandName != null)
+            return commandName.handleMessage(commandVo, 1);
+        System.out.println("   该功能尚未实现！！！");
+        commandVo.pop();
+        return "";
     }
 
     /**

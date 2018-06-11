@@ -53,6 +53,7 @@ public class CommandSecondView extends CommandName {
             }
             else if (operation.equals("3")){
                 commandVo.pop();
+                return "";
             }
             System.out.println(this.initString());
         }
