@@ -3,10 +3,12 @@ package com.lingnan;
 import com.lingnan.mybatisdemo.bean.Book;
 import com.lingnan.mybatisdemo.bean.Pager;
 import com.lingnan.mybatisdemo.mapper.BookMapper;
+import jdk.nashorn.internal.runtime.logging.Loggable;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +22,20 @@ public class BookMapperTestCase {
 
     private SqlSession session;
     private BookMapper bookMapper;
+    private Logger logger = Logger.getRootLogger();
 
     @Before
     public void init() throws IOException {
         InputStream inputStream = Resources.getResourceAsStream("config/mybatis-config.xml");
         SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         session = sessionFactory.openSession();
+        this.logger.info(session.toString());
+        //this.test();
         bookMapper = session.getMapper(BookMapper.class);
+    }
+
+    public void test(){ // 通过异常机制获取 包名 方法名 行号
+        throw new RuntimeException("eeee");
     }
     /**
      * 查找所有书籍信息
@@ -107,11 +116,18 @@ public class BookMapperTestCase {
     // 批量更新
     @Test
     public void testUpdateBooks(){
-        Book book = new Book("ISBN8859-1", "中国近代史", 0, null, null, null);
-        this.bookMapper.updateBooks(Arrays.asList(book));
+        Book book1 = new Book("ISBN8859-1", "资治通鉴第二版", 28.0, null, null, null);
+        Book book2 = new Book("ISBN8859-2", null, null, null, null, null);
+        this.bookMapper.updateBooks(Arrays.asList(book1, book2));
     }
 
-
+    // 批量插入
+    @Test
+    public void testAddBooks(){
+        Book book1 = new Book("ISBN8859-26", "资治通鉴第二版", 28.0, new Date(), "东软电子出版社", null);
+        Book book2 = new Book("ISBN8859-27", "java基础教程", 55.6, new Date(), "东软电子出版社", null);
+        this.bookMapper.addBooks(Arrays.asList(book1, book2));
+    }
 
     @After
     public void destroy(){

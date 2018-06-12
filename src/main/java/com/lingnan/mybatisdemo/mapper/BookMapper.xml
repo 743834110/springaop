@@ -135,15 +135,45 @@
         <set>
             book_name = case isbn
               <foreach collection="list" index="index" item="item">
-                  when #{item.isbn} then #{item.bookName}
+                  <choose>
+                      <when test="item.bookName != null">
+                          when #{item.isbn} then #{item.bookName}
+                      </when>
+                      <otherwise>
+                          WHEN #{item.isbn} THEN book_name
+                      </otherwise>
+                  </choose>
               </foreach>
-            END
+            END,
+            price = case isbn
+            <foreach collection="list" index="index" item="item">
+                <choose>
+                    <when test="item.price != null">
+                        when #{item.isbn} then #{item.price}
+                    </when>
+                    <otherwise>
+                        WHEN #{item.isbn} THEN price
+                    </otherwise>
+                </choose>
+            </foreach>
+            END,
         </set>
         where isbn IN
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
             #{item.isbn}
         </foreach>
     </update>
+
+    <!--批量插入书籍信息-->
+    <insert id="addBooks" parameterType="Book">
+        INSERT INTO book
+            <trim prefix="values">
+                <foreach collection="list" separator="," item="item" index="index">
+                    (#{item.isbn}, #{item.bookName}, #{item.price},
+                    #{item.publishDate}, #{item.publisher}, #{item.category.id})
+                </foreach>
+            </trim>
+    </insert>
 
     <!--分页查询-->
     <sql id="pagerCondition">

@@ -17,7 +17,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String isbn, String bookName, double price, Date publishDate, String publisher, Category category) {
+    public Book(String isbn, String bookName, Double price, Date publishDate, String publisher, Category category) {
         this.isbn = isbn;
         this.bookName = bookName;
         this.price = price;
@@ -80,7 +80,7 @@ public class Book {
                 "isbn='" + isbn + '\'' +
                 ", bookName='" + bookName + '\'' +
                 ", price=" + price +
-                ", publishDate=" + new SimpleDateFormat("yyyy-MM-dd").format(publishDate) +
+                ", publishDate=" + publishDate +
                 ", publisher='" + publisher + '\'' +
                 ", category=" + category +
                 '}';

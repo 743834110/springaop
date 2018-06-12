@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xsi:schemaLocation=
+                "http://www.springframework.org/schema/beans
+                 http://www.springframework.org/schema/beans/spring-beans.xsd
+                 http://www.springframework.org/schema/context
+                 http://www.springframework.org/schema/context/spring-context.xsd
+                ">
+
+    <bean id="book" class="com.lingnan.mybatisdemo.bean.Book"/>
+    <!--引入外部属性文件-->
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+
+    <!--定义数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="url" value="${url}"/>
+        <property name="driverClassName" value="${driver}"/>
+        <property name="username" value="${account}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <!--mybatis会话工厂-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="typeAliasesPackage" value="com.lingnan.mybatisdemo.bean"/>
+        <property name="mapperLocations">
+            <array>
+                <value>
+                    classpath:com/lingnan/mybatisdemo/mapper/BookMapper.xml
+                </value>
+            </array>
+        </property>
+    </bean>
+
+    <bean name="bookMapper" class="org.mybatis.spring.SqlSessionFactoryBean">
+        
+    </bean>
+
+</beans>
