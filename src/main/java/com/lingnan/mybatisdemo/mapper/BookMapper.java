@@ -32,6 +32,50 @@ public interface BookMapper {
      */
     List<Book> findBookWithBookCondition(Book book);
 
+    /**
+     * 多条件组合查询
+     * @param book
+     * @return
+     */
+    List<Book> findBooksWithMultipleCondition(Book book);
 
+    /**
+     * 多条件书籍更新
+     * @param book
+     * @return
+     */
+    int updateBooksWithMultipleCondition(Book book);
 
+    /**
+     * 按isbn集合查找书籍
+     * @param isbnList
+     * @return
+     */
+    List<Book> findBooksByIsbnList(List<String> isbnList);
+
+    /**
+     * 批量删除
+     * @param isbnArray
+     * @return
+     */
+    int deleteByIsbnList(String[] isbnArray);
+
+    /**
+     * 批量更新
+     * @param bookList
+     * @return
+     */
+    int updateBooks(List<Book> bookList);
+
+    /**
+     * 批量插入书籍
+     * @param bookList
+     * @return
+     */
+    int addBooks(List<Book> bookList);
+
+    /**
+     * 分页查询:不带参数
+     */
+    List<Book> findByPager();
 }

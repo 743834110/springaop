@@ -39,13 +39,35 @@ public class BookMapperTestCase {
     @Test
     public void findBookWithBookNameLike() throws Exception{
         Book book = new Book();
-        book.setBookName("a");
+        book.setBookName("aa");
         List<Book> books = this.bookMapper.findBookWithBookCondition(book);
     }
 
     @Test
     public void findAllWithCategoryTest(){
         this.bookMapper.findAllBooksWithCategory().forEach(System.out::println);
+    }
+
+
+    @Test
+    public void findBooksWithMultipleConditionTest(){
+        Book book = new Book();
+        book.setIsbn("4");
+        book.setBookName("aaa");
+        List<Book> books = this.bookMapper.findBooksWithMultipleCondition(book);
+        books.forEach(System.out::println);
+
+    }
+
+    // 测试书籍的更新
+    @Test
+    public void updateBooksWithMultipleConditionTest(){
+        Book book = new Book();
+        book.setIsbn("ISBN8859-1");
+//        book.setBookName("中国人民共和国");
+        book.setPrice(30.0);
+        int count = this.bookMapper.updateBooksWithMultipleCondition(book);
+        System.out.println(count);
     }
 
     @After

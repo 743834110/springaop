@@ -61,4 +61,49 @@
         </if>
     </select>
 
+
+    <!--多条件组合查询-->
+    <select id="findBooksWithMultipleCondition" parameterType="Book" resultMap="findAllWithCategoryMap">
+        SELECT *
+        FROM book
+        <!--<where>-->
+            <!--<if test="isbn != null">-->
+                <!--isbn like "%"#{isbn}"%"-->
+            <!--</if>-->
+            <!--<if test="bookName != null">-->
+                <!--and book_name like  "%"#{bookName}"%"-->
+            <!--</if>-->
+        <!--</where>-->
+        <trim prefix="where" prefixOverrides="and| or">
+            <if test="isbn != null">
+            isbn like "%"#{isbn}"%"
+            </if>
+            <if test="bookName != null">
+            and book_name like  "%"#{bookName}"%"
+            </if>
+        </trim>
+    </select>
+
+    <!--delete insert update select -->
+
+    <delete id="updateBooksWithMultipleCondition">
+        UPDATE book
+        <!--<set>-->
+            <!--<if test="bookName != null">-->
+                <!--book_name = #{bookName},-->
+            <!--</if>-->
+            <!--<if test="price != null">-->
+                <!--price = #{price},-->
+            <!--</if>-->
+        <!--</set>-->
+        <trim prefix="set" suffixOverrides=",">
+            <if test="bookName != null">
+                book_name = #{bookName},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+        </trim>
+        WHERE isbn = #{isbn}
+    </delete>
 </mapper>

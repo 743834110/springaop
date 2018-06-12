@@ -20,11 +20,14 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 public class ConnectionTestCase {
 
@@ -116,6 +119,9 @@ public class ConnectionTestCase {
     @Test
     public void connect2() throws ClassNotFoundException, SQLException, IOException {
 
+        Book book = new Book();
+        Method[] method = book.getClass().getDeclaredMethods();
+        Arrays.stream(method).forEach(System.out::println);
     }
 
 }
