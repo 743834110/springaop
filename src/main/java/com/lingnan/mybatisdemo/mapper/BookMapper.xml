@@ -37,6 +37,7 @@
     <resultMap id="findAllWithCategoryMap" type="Book">
         <id column="isbn" property="isbn"/>
         <result column="book_name" property="bookName"/>
+        <result column="price" property="price"/>
         <result column="book_price" property="price"/>
         <result column="publish_date" property="publishDate"/>
         <result column="publisher" property="publisher"/>
@@ -86,7 +87,7 @@
 
     <!--delete insert update select -->
 
-    <delete id="updateBooksWithMultipleCondition">
+    <update id="updateBooksWithMultipleCondition">
         UPDATE book
         <!--<set>-->
             <!--<if test="bookName != null">-->
@@ -105,5 +106,67 @@
             </if>
         </trim>
         WHERE isbn = #{isbn}
+    </update>
+
+
+    <!--按isbn集合查找书籍-->
+    <select id="findBooksByIsbnList" resultMap="findAllWithCategoryMap">
+        SELECT *
+        FROM book
+        WHERE isbn IN
+        <foreach collection="list" open="(" close=")" separator="," index="index" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--按isbn数据批量删除书籍-->
+    <delete id="deleteByIsbnList" parameterType="string">
+        DELETE 
+        FROM book
+        WHERE isbn IN
+        <foreach collection="array" item="item" index="index" separator="," close=")" open="(">
+            #{item}
+        </foreach>
     </delete>
+
+    <!--批量更新-->
+    <update id="updateBooks" parameterType="Book">
+        UPDATE book
+        <set>
+            book_name = case isbn
+              <foreach collection="list" index="index" item="item">
+                  when #{item.isbn} then #{item.bookName}
+              </foreach>
+            END
+        </set>
+        where isbn IN
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item.isbn}
+        </foreach>
+    </update>
+
+    <!--分页查询-->
+    <sql id="pagerCondition">
+        <where>
+            <if test=" param != null and  param.bookName != null">
+                book_name like "%"#{param.bookName}"%"
+            </if>
+            <if test="param != null and param.isbn != null">
+                and isbn like "%"#{param.isbn}"%"
+            </if>
+        </where>
+    </sql>
+    <select id="findByPager" parameterType="Pager" resultMap="findAllWithCategoryMap">
+        SELECT *
+        FROM book
+        <include refid="pagerCondition"/>
+        LIMIT #{startIndex}, #{pageSize}
+    </select>
+
+    <select id="countForPager" parameterType="Pager" resultType="int">
+        SELECT count(*)
+        FROM book
+        <include refid="pagerCondition"/>
+    </select>
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.lingnan;
 
 import com.lingnan.mybatisdemo.bean.Book;
+import com.lingnan.mybatisdemo.bean.Pager;
 import com.lingnan.mybatisdemo.mapper.BookMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -12,8 +13,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 public class BookMapperTestCase {
@@ -69,6 +69,49 @@ public class BookMapperTestCase {
         int count = this.bookMapper.updateBooksWithMultipleCondition(book);
         System.out.println(count);
     }
+
+    // 测试分页查询
+    @Test
+    public void testFindByPager(){
+        Pager<Book> pager = new Pager<>();
+        Book book = new Book();
+        book.setBookName("aaa");
+        book.setIsbn("ISBN8859");
+        pager.setParam(book);
+        int count = this.bookMapper.countForPager(pager);
+        pager.setTotal(count);
+        pager.setCurrentPage(2);
+        pager.setPageSize(20);
+        List<Book> books = this.bookMapper.findByPager(pager);
+        System.out.println(books.size() + ", " + count);
+
+    }
+
+    // 批量查找
+    @Test
+    public void testFindBooksByIsbnList(){
+        List<String> isbnList = new ArrayList<>();
+        Collections.addAll(isbnList, "ISBN8859-1", "ISBN8859-2");
+        List<Book> books = this.bookMapper.findBooksByIsbnList(isbnList);
+        for (Book book : books) {
+            System.out.println(book);
+        }
+    }
+    // 批量删除
+    @Test
+    public void testDeleteByIsbnList(){
+        int count = this.bookMapper.deleteByIsbnList(new String[]{"ISBN8859-10"});
+        System.out.println(count);
+    }
+
+    // 批量更新
+    @Test
+    public void testUpdateBooks(){
+        Book book = new Book("ISBN8859-1", "中国近代史", 0, null, null, null);
+        this.bookMapper.updateBooks(Arrays.asList(book));
+    }
+
+
 
     @After
     public void destroy(){

@@ -1,6 +1,7 @@
 package com.lingnan.mybatisdemo.mapper;
 
 import com.lingnan.mybatisdemo.bean.Book;
+import com.lingnan.mybatisdemo.bean.Pager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -77,5 +78,13 @@ public interface BookMapper {
     /**
      * 分页查询:不带参数
      */
-    List<Book> findByPager();
+    List<Book> findByPager(Pager pager);
+
+    /**
+     * 与分页查询sql一致
+     * 统计记录的总数
+     * @param pager
+     * @return
+     */
+    int countForPager(Pager pager);
 }
