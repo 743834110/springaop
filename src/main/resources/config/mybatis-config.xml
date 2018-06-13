@@ -29,6 +29,8 @@
     <mappers>
         <!--<mapper resource="config/categoryMapper.xml"/>-->
         <!--<mapper resource="config/bookMapper.xml"/>-->
-        <package name="com.lingnan.mybatisdemo.mapper"/>
+        <!--命名和位置规范时，在spring配置文件中注明的mapper扫描类将自动加载类名.xml文件-->
+        <!--<package name="com.lingnan.mybatisdemo.mapper"/>-->
+        <!--<mapper resource="BookMapper.xml"/>-->
     </mappers>
 </configuration>

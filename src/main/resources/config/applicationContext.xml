@@ -4,6 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
         xsi:schemaLocation=
                 "http://www.springframework.org/schema/beans
                  http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -11,7 +12,24 @@
                  http://www.springframework.org/schema/context/spring-context.xsd
                  http://www.springframework.org/schema/aop
                  http://www.springframework.org/schema/aop/spring-aop.xsd
+                 http://www.springframework.org/schema/tx
+                 http://www.springframework.org/schema/tx/spring-tx.xsd
+
                 ">
+    <context:component-scan base-package="com.lingnan.mybatisdemo.service, com.lingnan.mybatisdemo.view"/>
+
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="jsps"/>
+        <property name="suffix" value="*.jsp"/>
+    </bean>
+
+
+
+
+    <context:annotation-config/>
 
     <bean id="book" class="com.lingnan.mybatisdemo.bean.Book"/>
     <!--引入外部属性文件-->
@@ -26,7 +44,7 @@
     </bean>
 
     <!--mybatis会话工厂-->
-    <bean scope="singleton" id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="configLocation" value="config/mybatis-config.xml"/>
     </bean>
@@ -39,6 +57,12 @@
         <!--<property name="mapperInterface" value="com.lingnan.mybatisdemo.mapper.BookMapper"/>-->
     <!--</bean>-->
 
+    <!--abstract = true 常用于建立模板以简化子类的配置，其通常和parent连用-->
+    <bean id="config"  class="com.lingnan.mybatisdemo.utils.Config" abstract="false" name="config2" init-method="getCustomer" factory-method="getInstance"/>
 
-    <context:component-scan base-package="com.lingnan.mybatisdemo.service"/>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
