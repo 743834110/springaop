@@ -1,4 +1,4 @@
-package com.lingnan;
+package com.lingnan.mapper;
 
 import com.lingnan.mybatisdemo.bean.Customer;
 import com.lingnan.mybatisdemo.mapper.CustomerMapper;

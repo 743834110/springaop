@@ -1,4 +1,4 @@
-package com.lingnan;
+package com.lingnan.mapper;
 
 import com.lingnan.mybatisdemo.bean.Cart;
 import com.lingnan.mybatisdemo.mapper.CartMapper;

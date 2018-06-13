@@ -2,6 +2,7 @@ package com.lingnan;
 
 import com.lingnan.mybatisdemo.bean.Book;
 import com.lingnan.mybatisdemo.mapper.BookMapper;
+import com.lingnan.mybatisdemo.service.IBookService;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.aspectj.lang.annotation.Aspect;
@@ -20,9 +21,8 @@ public class springMybatisTest {
         ApplicationContext context = new ClassPathXmlApplicationContext(configuration);
         SqlSessionFactory factory = context.getBean(SqlSessionFactory.class);
         SqlSession session = factory.openSession();
-        BookMapper bookMapper = session.getMapper(BookMapper.class);
-        for (Book book : bookMapper.findAllBooks()) {
-            System.out.println(book);
-        }
+        IBookService service = context.getBean(IBookService.class);
+        service.findAll();
+
     }
 }

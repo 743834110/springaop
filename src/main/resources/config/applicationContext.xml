@@ -3,11 +3,14 @@
         xmlns="http://www.springframework.org/schema/beans"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
         xsi:schemaLocation=
                 "http://www.springframework.org/schema/beans
                  http://www.springframework.org/schema/beans/spring-beans.xsd
                  http://www.springframework.org/schema/context
                  http://www.springframework.org/schema/context/spring-context.xsd
+                 http://www.springframework.org/schema/aop
+                 http://www.springframework.org/schema/aop/spring-aop.xsd
                 ">
 
     <bean id="book" class="com.lingnan.mybatisdemo.bean.Book"/>
@@ -15,7 +18,7 @@
     <context:property-placeholder location="classpath:config/jdbc.properties"/>
 
     <!--定义数据源-->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="url" value="${url}"/>
         <property name="driverClassName" value="${driver}"/>
         <property name="username" value="${account}"/>
@@ -23,20 +26,19 @@
     </bean>
 
     <!--mybatis会话工厂-->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    <bean scope="singleton" id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="com.lingnan.mybatisdemo.bean"/>
-        <property name="mapperLocations">
-            <array>
-                <value>
-                    classpath:com/lingnan/mybatisdemo/mapper/BookMapper.xml
-                </value>
-            </array>
-        </property>
+        <property name="configLocation" value="config/mybatis-config.xml"/>
     </bean>
 
-    <bean name="bookMapper" class="org.mybatis.spring.SqlSessionFactoryBean">
-        
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.lingnan.mybatisdemo.mapper"/>
     </bean>
+    <!--<bean name="bookMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"/>-->
+        <!--<property name="mapperInterface" value="com.lingnan.mybatisdemo.mapper.BookMapper"/>-->
+    <!--</bean>-->
 
+
+    <context:component-scan base-package="com.lingnan.mybatisdemo.service"/>
 </beans>

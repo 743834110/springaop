@@ -4,12 +4,14 @@ import com.lingnan.mybatisdemo.bean.Book;
 import com.lingnan.mybatisdemo.bean.Pager;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/6/7.
  */
+
 public interface BookMapper {
     /**
      * 查询属于某分类的书籍信息
