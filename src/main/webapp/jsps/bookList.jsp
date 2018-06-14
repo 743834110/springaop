@@ -12,7 +12,7 @@
 <head>
     <title>Title</title>
     <meta charset="UTF-8">
-
+    <base href="${pageContext.request.contextPath}/">
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
@@ -35,7 +35,12 @@
     </aside>
     <section>
         <div class="container">
-            <table class="table table-striped">
+            <h2 class="text-center">书籍列表</h2>
+            <ul class="list-unstyled list-inline">
+                <li><a href="book/addBook.action">添加书籍</a></li>
+                <li><a href="#">搜索</a></li>
+            </ul>
+            <table class="table table-striped table-bordered">
                 <tr>
                     <th>ISBN</th>
                     <th>书籍名称</th>
@@ -43,10 +48,8 @@
                     <th>出版社</th>
                     <th>出版时间</th>
                     <th>分类</th>
+                    <th>操作</th>
                 </tr>
-                <%
-
-                %>
                 <c:forEach items="${bookList}" var="book">
                     <tr>
                         <td>${book.isbn}</td>
@@ -55,14 +58,22 @@
                         <td>${book.publisher}</td>
                         <td>${book.publishDate.toLocaleString()}</td>
                         <td>${book.category.id}</td>
+                        <td>
+                            <a href="" id="">修改</a>
+                            <a href="javascript:deleteIsbn('${book.isbn}')">删除</a>
+                        </td>
                     </tr>
                 </c:forEach>
 
             </table>
         </div>
     </section>
-    <footer>
-
-    </footer>
 </body>
+    <script>
+        function deleteIsbn(isbn) {
+            if (confirm("确认要删除该书籍吗?")){
+                window.location.href = "book/deleteBook.action?isbn=" + isbn;
+            }
+        }
+    </script>
 </html>

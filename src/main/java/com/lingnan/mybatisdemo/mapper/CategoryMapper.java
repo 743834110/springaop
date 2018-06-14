@@ -40,5 +40,10 @@ public interface CategoryMapper {
      */
     List<Category> searchAllCategoryWithBooks();
 
-
+    /**
+     * 通过id查找所属分类
+     * @param id
+     * @return
+     */
+    Category getCategoryById(Integer id);
 }

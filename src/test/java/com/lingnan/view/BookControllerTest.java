@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * BookController 控制器类
@@ -34,4 +35,12 @@ public class BookControllerTest {
         this.logger.info(result);
 
     }
+
+    @Test
+    public void testAddBook(){
+        ModelAndView view = this.controller.addBook();
+//        this.logger.info(view);
+    }
+
+
 }

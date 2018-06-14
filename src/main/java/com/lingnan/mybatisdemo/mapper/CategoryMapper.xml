@@ -20,7 +20,7 @@
 
 
     <select id="selectBooksById" resultType="Book" parameterType="int">
-        SELECT book.isbn, book.book_name bookName, book.category_id `category.id`, book.price, book.publish_date publishDate, book.publisher
+        SELECT book.book_name bookName,book.isbn,  book.category_id `category.id`, book.price, book.publish_date publishDate, book.publisher
         FROM book
         WHERE category_id = #{id}
     </select>
@@ -30,15 +30,7 @@
         SELECT * FROM category;
     </select>
 
-
-
-
-
-
-
-
-
-
+    
     <update id="updateCategory" parameterType="Category">
         UPDATE category set name = #{name} WHERE id = #{id}
     </update>
@@ -70,4 +62,11 @@
             <result column="id" property="category.id"/>
         </collection>
     </resultMap>
+    
+    
+    <select id="getCategoryById" resultType="Category">
+        SELECT id, name
+        FROM msdb.category
+        WHERE id = #{id}
+    </select>
 </mapper>
