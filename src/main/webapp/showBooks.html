@@ -138,11 +138,172 @@
 
         <p><code>&lt;header&gt;</code> 作为内联元素被包围。</p>
         <p>如果需要把代码显示为一个独立的块元素，请使用 &lt;pre&gt; 标签：</p>
-        <pre>
+        <pre class="pre-scrollable">
 &lt;article&gt;
     &lt;h1&gt;Article Heading&lt;/h1&gt;
 &lt;/article&gt;
         </pre>
+        <var>
+            int a = 5 - 5 * 2;
+        </var>
+        <kbd>
+            CTRL + p
+        </kbd>
+        <samp>
+            {1, 2, 3, 4}
+        </samp>
+        <p>ddfdfd</p>
+        <p>ddd</p>
+        <table class="table table-bordered table-hover">
+           <caption>dddd</caption>
+            <thead class="">
+                <tr>
+                   <th>ISBN</th>
+                   <th>书籍名称</th>
+                   <th>价格</th>
+                   <th>出版社</th>
+                   <th>出版时间</th>
+                   <th>分类</th>
+                   <th>操作</th>
+                </tr>
+           </thead>
+            <tbody>
+                <tr class="active">
+                    <td>ISBN</td>
+                    <td>ee</td>
+                    <td>dd</td>
+                    <td>dd</td>
+                    <td>dd</td>
+                </tr>
+                <tr>
+                    <td class="success">ISBN</td>
+                    <td class="info">ee</td>
+                    <td class="warning">dd</td>
+                    <td class="danger">dd</td>
+                    <td>dd</td>
+                </tr>
+                <tr>
+                    <td>ISBN</td>
+                    <td>ee</td>
+                    <td>dd</td>
+                    <td>dd</td>
+                    <td>dd</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+        <!--<form role="form" class="form-inline">-->
+            <!--<div class="form-group">-->
+        <!--<label for="name" class="sr-only">名称</label>-->
+        <!--<input type="text" class="form-control" id="name" placeholder="请输入名称">-->
+    <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label for="inputfile" class="sr-only">文件输入</label>-->
+            <!--<input type="file" id="inputfile">-->
+            <!--<p class="help-block">这里是块级帮助文本的实例。</p>-->
+        <!--</div>-->
+        <!--<div class="checkbox">-->
+            <!--<label>-->
+                <!--<input type="checkbox">请打勾-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<button type="submit" class="btn btn-default">提交</button>-->
+        <!--</form>-->
+
+
+        <!--<form class="form-inline" role="form">-->
+            <!--<div class="form-group">-->
+                <!--<label class="sr-only" for="name">名称</label>-->
+                <!--<input type="text" class="form-control" id="name" placeholder="请输入名称">-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="sr-only" for="inputfile">文件输入</label>-->
+                <!--<input type="file" id="inputfile">-->
+            <!--</div>-->
+            <!--<div class="checkbox">-->
+                <!--<label>-->
+                    <!--<input type="checkbox">请打勾-->
+                <!--</label>-->
+            <!--</div>-->
+            <!--<button type="submit" class="btn btn-default">提交</button>-->
+        <!--</form>-->
+
+
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="firstname" class="col-sm-2 control-label">名字</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="firstname" placeholder="请输入名字">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastname" class="col-sm-2 control-label">姓</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="lastname" placeholder="请输入姓">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox">请记住我
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">登录</button>
+                </div>
+            </div>
+        </form>
+
+        <form role="form">
+            <div class="form-group">
+                <label for="name">文本框</label>
+                <textarea class="form-control" rows="2"></textarea>
+            </div>
+        </form>
+
+
+
+        <label for="name">默认的复选框和单选按钮的实例</label>
+        <div class="checkbox">
+            <label><input type="checkbox" value="">选项 1</label>
+        </div>
+        <div class="checkbox">
+            <label><input type="checkbox" value="">选项 2</label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> 选项 1
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">选项 2 - 选择它将会取消选择选项 1
+            </label>
+        </div>
+        <label for="name">内联的复选框和单选按钮的实例</label>
+        <div>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox1" value="option1"> 选项 1
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox2" value="option2"> 选项 2
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" id="inlineCheckbox3" value="option3"> 选项 3
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios3" value="option1" checked> 选项 1
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios4"  value="option2"> 选项 2
+            </label>
+        </div>
+
     </div>
 </body>
 </html>

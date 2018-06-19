@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,12 +28,13 @@ public class BookMapperTestCase {
 
     @Before
     public void init() throws IOException {
-        InputStream inputStream = Resources.getResourceAsStream("config/mybatis-config.xml");
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-        session = sessionFactory.openSession();
-        this.logger.info(session.toString());
+//        InputStream inputStream = Resources.getResourceAsStream("config/mybatis-config.xml");
+//        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+//        session = sessionFactory.openSession();
+//        this.logger.info(session.toString());
+        ApplicationContext context =  new ClassPathXmlApplicationContext("config/applicationContext.xml");
         //this.test();
-        bookMapper = session.getMapper(BookMapper.class);
+        bookMapper = context.getBean(BookMapper.class);
     }
 
     public void test(){ // 通过异常机制获取 包名 方法名 行号
@@ -82,17 +85,16 @@ public class BookMapperTestCase {
     // 测试分页查询
     @Test
     public void testFindByPager(){
-        Pager<Book> pager = new Pager<>();
+        Pager pager = new Pager();
         Book book = new Book();
-        book.setBookName("aaa");
-        book.setIsbn("ISBN8859");
         pager.setParam(book);
+        this.logger.info(pager);
         int count = this.bookMapper.countForPager(pager);
         pager.setTotal(count);
-        pager.setCurrentPage(2);
+        pager.setCurrentPage(0);
         pager.setPageSize(20);
         List<Book> books = this.bookMapper.findByPager(pager);
-        System.out.println(books.size() + ", " + count);
+        System.out.println(books.get(0));
 
     }
 

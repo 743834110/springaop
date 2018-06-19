@@ -5,6 +5,7 @@ import com.lingnan.mybatisdemo.bean.Pager;
 import com.lingnan.mybatisdemo.mapper.BookMapper;
 import com.lingnan.mybatisdemo.service.IBookService;
 import javafx.beans.property.SimpleStringProperty;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,8 @@ import java.util.List;
 @Service
 @Transactional
 public class BookServiceImpl implements IBookService {
+
+    private Logger logger = Logger.getLogger(this.getClass());
 
     @Autowired
     private BookMapper bookMapper;
@@ -69,13 +72,18 @@ public class BookServiceImpl implements IBookService {
         return this.bookMapper.addBooks(bookList);
     }
 
+
+
     @Override
-    public List<Book> findByPager(Pager pager) {
-        return null;
+    public List<Book> findByPager(Pager<Book> pager) {
+        return this.bookMapper.findByPager(pager);
     }
 
     @Override
-    public int countForPager(Pager pager) {
-        return 0;
+    public int countForPager(Pager<Book> pager) {
+        // TODO 处理浏览器端尚为填补到数据
+        this.logger.info(pager);
+        int pageNum = this.bookMapper.countForPager(pager);
+        return pageNum;
     }
 }

@@ -80,7 +80,7 @@ public interface BookMapper {
     /**
      * 分页查询:不带参数
      */
-    List<Book> findByPager(Pager pager);
+    List<Book> findByPager(Pager<Book> pager);
 
     /**
      * 与分页查询sql一致
@@ -88,5 +88,5 @@ public interface BookMapper {
      * @param pager
      * @return
      */
-    int countForPager(Pager pager);
+    int countForPager(Pager<Book> pager);
 }

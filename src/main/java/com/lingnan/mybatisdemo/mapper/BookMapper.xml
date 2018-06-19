@@ -42,7 +42,7 @@
         <result column="publish_date" property="publishDate"/>
         <result column="publisher" property="publisher"/>
         <association property="category" column="category_id"  javaType="com.lingnan.mybatisdemo.bean.Category">
-            <id column="id" property="id"/>
+            <id column="category_id" property="id"/>
             <result column="name" property="name"/>
         </association>
     </resultMap>
@@ -178,24 +178,31 @@
     <!--分页查询-->
     <sql id="pagerCondition">
         <where>
+            book.category_id = category.id
             <if test=" param != null and  param.bookName != null">
-                book_name like "%"#{param.bookName}"%"
+                and book_name like "%"#{param.bookName}"%"
             </if>
             <if test="param != null and param.isbn != null">
                 and isbn like "%"#{param.isbn}"%"
+            </if>
+            <if test="param != null and param.category != null">
+                and category.id = #{param.category.id}
+            </if>
+            <if test="param != null and param.publisher != null">
+                and publisher like "%"#{param.publisher}"%"
             </if>
         </where>
     </sql>
     <select id="findByPager" parameterType="Pager" resultMap="findAllWithCategoryMap">
         SELECT *
-        FROM book
+        FROM book, category
         <include refid="pagerCondition"/>
         LIMIT #{startIndex}, #{pageSize}
     </select>
 
     <select id="countForPager" parameterType="Pager" resultType="int">
         SELECT count(*)
-        FROM book
+        FROM book, category
         <include refid="pagerCondition"/>
     </select>
 

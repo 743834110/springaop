@@ -9,22 +9,22 @@ import java.util.List;
  */
 public class Pager<T> {
 
-    private int currentPage = 1;    // 第几页
-    private int pageSize = 10;      // 页的大小
-    private int total;              // 记录数
+    private Integer currentPage = 1;    // 第几页
+    private Integer pageSize = 10;      // 页的大小
+    private Integer total;              // 记录数
     private T param;                // 条件查询参数
     private List<T> results;        // 查询结果
 
     public Pager() {
     }
 
-    public Pager(int currentPage, int pageSize, int total) {
+    public Pager(Integer currentPage, Integer pageSize, Integer total) {
         this.currentPage = currentPage;
         this.pageSize = pageSize;
         this.total = total;
     }
 
-    public Pager(int currentPage, int pageSize, int total, T param, List<T> results) {
+    public Pager(Integer currentPage, Integer pageSize, Integer total, T param, List<T> results) {
         this.currentPage = currentPage;
         this.pageSize = pageSize;
         this.total = total;
@@ -50,25 +50,25 @@ public class Pager<T> {
         this.param = param;
     }
 
-    public int getCurrentPage() {
+    public Integer getCurrentPage() {
         return currentPage;
     }
 
-    public void setCurrentPage(int currentPage) {
+    public void setCurrentPage(Integer currentPage) {
         if (currentPage > 1)
             this.currentPage = currentPage;
     }
 
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         if (pageSize > 1)
             this.pageSize = pageSize;
     }
 
-    public int getTotal() {
+    public Integer getTotal() {
         return total;
     }
 
@@ -81,7 +81,7 @@ public class Pager<T> {
      * 获取当前的页数
      * @return
      */
-    public int getStartIndex(){
+    public Integer getStartIndex(){
         return (currentPage - 1) * pageSize;
     }
 
@@ -89,7 +89,7 @@ public class Pager<T> {
      * 获取总页数
      * @return
      */
-    public int getPages(){
+    public Integer getPages(){
         return this.total % this.pageSize == 0?
                 this.total / this.pageSize:
                 this.total / this.pageSize + 1;
@@ -99,7 +99,7 @@ public class Pager<T> {
      * 获取下一页
      * @return
      */
-    public int getNextPage(){
+    public Integer getNextPage(){
 
         int nextPage = currentPage >= this.getPages()?
                 this.getPages(): currentPage + 1;
@@ -110,13 +110,12 @@ public class Pager<T> {
      * 获取上一页
      * @return
      */
-    public int getPrePage(){
+    public Integer getPrePage(){
 
         int prePage = currentPage <= 1?
                 currentPage: currentPage - 1;
         return prePage;
     }
-
 
     @Override
     public String toString() {
@@ -124,6 +123,8 @@ public class Pager<T> {
                 "currentPage=" + currentPage +
                 ", pageSize=" + pageSize +
                 ", total=" + total +
+                ", param=" + param +
+                ", results=" + results +
                 '}';
     }
 }
