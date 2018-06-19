@@ -1,12 +1,17 @@
 package com.lingnan.mybatisdemo.bean;
 
-import java.text.SimpleDateFormat;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class Book {
 
     private String isbn;
+    @NotBlank(message = "{bookName.not.message}")
+    @Size(min = 1, max = 50, message = "{bookName.size.message}")
     private String bookName;
+    @NotBlank(message = "{price.message}")
     private Double price;  //价格要以整数表示
     private Date  publishDate;
     private String publisher;

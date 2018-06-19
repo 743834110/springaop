@@ -10,6 +10,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 @Controller
@@ -53,6 +57,10 @@ public class BookController {
         ModelAndView view = new ModelAndView("bookList");
         view.addObject("categories", categories);
         view.addObject("bookPager", bookPager);
+
+
+        int a = 0 / 5;
+        a = 5 / 0;
         return view;  //
     }
 
@@ -66,7 +74,15 @@ public class BookController {
     }
 
     @RequestMapping("/toAddBook")
-    public String toAddBook(Book book){
+    public String toAddBook(Model model, @Validated Book book, BindingResult bindingResult){
+        Properties properties = new Properties();
+        if (bindingResult.hasErrors()){
+            List<ObjectError> objectErrors = bindingResult.getAllErrors();
+            objectErrors.forEach(this.logger::debug);
+            model.addAttribute("errors", objectErrors);
+            return "forward:/book/addBook.action";
+        }
+
         this.logger.info(book);
         int count = this.bookService.addBooks(Collections.singletonList(book));
         if (count != 0)

@@ -21,7 +21,7 @@
 
     <context:component-scan base-package="com.lingnan.mybatisdemo.view, com.lingnan.mybatisdemo.converter"/>
 
-    <mvc:annotation-driven conversion-service="conversionService2"/>
+    <mvc:annotation-driven conversion-service="conversionService2" validator="validator"/>
     <bean id="conversionService2" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>
@@ -30,9 +30,30 @@
         </property>
     </bean>
 
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
+        <property name="validationMessageSource" ref="validationMessageSource"/>
+    </bean>
+
+    <bean id="validationMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>classpath:bookValidationSource</value>
+            </list>
+        </property>
+        <property name="fileEncodings">
+            <props>
+                <prop key="bookValidationSource">UTF-8</prop>
+            </props>
+        </property>
+        <!--&lt;!&ndash; 指定文件的编码 &ndash;&gt;-->
+        <!--<property name="defaultEncoding" value="UTF-8"/>-->
+        <!-- 对资源文件内容缓存的时间，单位秒 -->
+        <property name="cacheSeconds" value="120"/>
+    </bean>
 
 
-
+    <!--视图处理器-->
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass"
@@ -41,4 +62,12 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
+
+    <!--国际化消息处理-->
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value=""/>
+    </bean>
+
+    <!--自定义异常处理器-->
+    <bean id="exceptionResolver" class="com.lingnan.mybatisdemo.Exception.CustomExceptionResolver"/>
 </beans>

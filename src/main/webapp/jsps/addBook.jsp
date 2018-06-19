@@ -28,6 +28,12 @@
 </head>
 <body>
     <div class="container">
+
+        <c:forEach items="${errors}" var="error">
+            <%--@elvariable id="error" type="org.springframework.validation.ObjectError"--%>
+            ${error.defaultMessage}
+        </c:forEach>
+
         <form  action="book/toAddBook.action" method="post">
             <table class="table table-striped table-bordered">
                 <tbody>
