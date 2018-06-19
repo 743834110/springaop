@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/book")
@@ -51,17 +53,23 @@ public class BookController {
         this.logger.info(book);
         int count = this.bookService.addBooks(Collections.singletonList(book));
         if (count != 0)
-            return "forward:/book/list.action";
-        return "forward:/book/addBook.action";
+            return "redirect:/book/list.action";
+        return "redirect:/book/addBook.action";
     }
 
 
     @RequestMapping("/deleteBook")
-    public String deleteBook(String isbn){
+    public String deleteBook(HttpServletRequest request, Model model, String isbn){
         this.logger.info(isbn);
+        this.logger.info(request);
+
         int count = this.bookService.deleteByIsbnList(new String[]{isbn});
-        return "forward:/book/list.action";
+        boolean success = false;
+        if (count != 0)
+            success = true;
+        model.addAttribute("result", success);
+        model.addAttribute("url", "book/list.action");
+
+        return "result";
     }
-
-
 }

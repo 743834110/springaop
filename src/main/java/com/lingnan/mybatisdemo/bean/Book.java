@@ -43,7 +43,8 @@ public class Book {
     }
 
     public Double getPrice() {
-        return price;
+
+        return this.price == null? 0.0: this.price;
     }
 
     public void setPrice(Double price) {
