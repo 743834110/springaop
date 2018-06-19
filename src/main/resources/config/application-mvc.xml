@@ -47,7 +47,7 @@
             </props>
         </property>
         <!--&lt;!&ndash; 指定文件的编码 &ndash;&gt;-->
-        <!--<property name="defaultEncoding" value="UTF-8"/>-->
+        <property name="defaultEncoding" value="UTF-8"/>
         <!-- 对资源文件内容缓存的时间，单位秒 -->
         <property name="cacheSeconds" value="120"/>
     </bean>
@@ -63,10 +63,14 @@
     </bean>
 
 
-    <!--国际化消息处理-->
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-        <property name="defaultLocale" value=""/>
-    </bean>
+    <!--自定义国际化消息处理-->
+    <!--<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">-->
+        <!--<property name="defaultLocale" value="en"/>-->
+    <!--</bean>-->
+
+    <!--<bean id="changeLocaleResolver" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">-->
+        <!--<property name="paramName" value="ln"/>-->
+    <!--</bean>-->
 
     <!--自定义异常处理器-->
     <bean id="exceptionResolver" class="com.lingnan.mybatisdemo.Exception.CustomExceptionResolver"/>

@@ -58,9 +58,6 @@ public class BookController {
         view.addObject("categories", categories);
         view.addObject("bookPager", bookPager);
 
-
-        int a = 0 / 5;
-        a = 5 / 0;
         return view;  //
     }
 
@@ -75,7 +72,6 @@ public class BookController {
 
     @RequestMapping("/toAddBook")
     public String toAddBook(Model model, @Validated Book book, BindingResult bindingResult){
-        Properties properties = new Properties();
         if (bindingResult.hasErrors()){
             List<ObjectError> objectErrors = bindingResult.getAllErrors();
             objectErrors.forEach(this.logger::debug);

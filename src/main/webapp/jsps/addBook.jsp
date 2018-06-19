@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
     <title>Title</title>
@@ -29,9 +30,17 @@
 <body>
     <div class="container">
 
+        <%--@elvariable id="errors" type="java.util.List"--%>
         <c:forEach items="${errors}" var="error">
             <%--@elvariable id="error" type="org.springframework.validation.ObjectError"--%>
-            ${error.defaultMessage}
+            <%--${error.code}--%>
+            <%--${error.objectName}--%>
+            <%--${error.defaultMessage}--%>
+            <h2>argument</h2>
+            ${fn:contains(error.arguments[0],'bookName')}: ${error.defaultMessage}
+            <%--<h2>code</h2>--%>
+            <%--${error.codes}--%>
+            <br/>
         </c:forEach>
 
         <form  action="book/toAddBook.action" method="post">
