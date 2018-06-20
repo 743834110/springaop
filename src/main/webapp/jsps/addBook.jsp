@@ -51,6 +51,9 @@
                         <td>
                             <input title="ISBN" type="text" name="isbn">
                         </td>
+                        <td>
+                            <p id="isbnHint"></p>
+                        </td>
                     </tr>
                     <tr>
                         <td>书籍名称</td>
@@ -91,6 +94,50 @@
             <input type="submit" name="提交">
             <input type="reset" name="重置">
         </form>
+        <div class="clearfix row">
+
+        </div>
     </div>
 </body>
+<script>
+    $(function () {
+        $("input[title=ISBN]").blur(function () {
+            console.log(this)
+            $.ajax({
+                url: "${pageContext.request.contextPath}/book/search.action",
+                data: {isbn: $(this).val()},
+                sync: false,
+                success: function (res, status, xhr) {
+                    var json = eval( '(' + res + ')')
+                    if (json.success)
+                        $("p#isbnHint").html("ISBN已经存在")
+                    else
+                        $("p#isbnHint").html("该ISBN合法")
+
+                },
+                error: function (status, xhr) {
+                    console.log(status)
+                }
+            })
+        })
+//        -----------------
+
+        $("input[type = 'reset']").click(function () {
+            $.ajax({
+                url: "book/findAllBooks.action",
+                sync: false,
+                success: function (res, status, xhr) {
+//                    var json = $.parseJSON(res
+                    $.each(res, function (k, v) {
+                        var tag = '<p>' + v['isbn'] + v['bookName'] + new Date(v['publishDate']) + '</p>';
+                        $("div.clearfix").append(tag)
+                    })
+                },
+                error: function (status, xhr) {
+                    console.log(status)
+                }
+            })
+        })
+    })
+</script>
 </html>

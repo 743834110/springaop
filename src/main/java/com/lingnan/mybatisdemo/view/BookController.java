@@ -109,5 +109,21 @@ public class BookController {
         return "{success: true}";
     }
 
+    @RequestMapping("/search")
+    @ResponseBody
+    public String search(Book book){
+        this.logger.info(book);
+        int size = this.bookService.findBookWithBookCondition(book).size();
+        if (size != 0)
+            return "{success: true}";
+        return "{success: false}";
+    }
+
+    @RequestMapping("/findAllBooks")
+    @ResponseBody
+    public List<Book> getAllBooks(){
+        List<Book> books = this.bookService.findAll();
+        return books;
+    }
 
 }

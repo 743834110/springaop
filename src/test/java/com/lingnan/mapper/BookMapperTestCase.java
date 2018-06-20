@@ -51,8 +51,9 @@ public class BookMapperTestCase {
     @Test
     public void findBookWithBookNameLike() throws Exception{
         Book book = new Book();
-        book.setBookName("aa");
+        book.setIsbn("ISBN8859-1");
         List<Book> books = this.bookMapper.findBookWithBookCondition(book);
+        System.out.println(books.size());
     }
 
     @Test

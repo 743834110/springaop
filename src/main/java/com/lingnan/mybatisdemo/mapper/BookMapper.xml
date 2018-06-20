@@ -57,8 +57,8 @@
     <select id="findBookWithBookCondition" resultType="Book" parameterType="Book">
         SELECT *
         FROM book
-        <if test="bookName != null">
-            WHERE book_name LIKE '%' || #{bookName} || '%'
+        <if test="isbn != null">
+            WHERE isbn = #{isbn}
         </if>
     </select>
 

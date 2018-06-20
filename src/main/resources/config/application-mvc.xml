@@ -21,7 +21,7 @@
 
     <context:component-scan base-package="com.lingnan.mybatisdemo.view, com.lingnan.mybatisdemo.converter"/>
 
-    <mvc:annotation-driven conversion-service="conversionService2" validator="validator"/>
+    <mvc:annotation-driven conversion-service="conversionService2" validator="validator" />
     <bean id="conversionService2" class="org.springframework.context.support.ConversionServiceFactoryBean">
         <property name="converters">
             <set>
