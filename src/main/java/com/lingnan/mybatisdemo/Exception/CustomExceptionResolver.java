@@ -11,7 +11,7 @@ public class CustomExceptionResolver implements HandlerExceptionResolver {
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
         ModelAndView view = new ModelAndView("commonError");
-
+        view.addObject("message", ex);
         return view;
     }
 }

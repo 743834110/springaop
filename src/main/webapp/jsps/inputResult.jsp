@@ -1,11 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: admin
-  Date: 2018/6/19
-  Time: 16:20
+  Date: 2018/6/20
+  Time: 8:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Title</title>
@@ -25,10 +27,29 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+
 </head>
 <body>
     <div class="container">
-
+        来自demo的问候：${input}
+        数组：
+        <pre>
+            <c:forEach items="${isbns}" var="book">
+                <c:out value="${book}"/>
+            </c:forEach>
+        </pre>
+        <div class="clearfix row">
+        </div>
     </div>
 </body>
+<script>
+    $(function () {
+        $.get(
+            "showBooks.html",
+            function (res, status, xhr) {
+                $("div.row").html(res)
+                console.log(status)
+        })
+    })
+</script>
 </html>

@@ -73,5 +73,5 @@
     <!--</bean>-->
 
     <!--自定义异常处理器-->
-    <bean id="exceptionResolver" class="com.lingnan.mybatisdemo.Exception.CustomExceptionResolver"/>
+    <!--<bean id="exceptionResolver" class="com.lingnan.mybatisdemo.Exception.CustomExceptionResolver"/>-->
 </beans>
