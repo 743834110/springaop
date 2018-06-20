@@ -49,7 +49,10 @@
                     <tr>
                         <td>ISBN</td>
                         <td>
-                            <input title="ISBN" type="text" name="isbn">
+                            <input title="ISBN" type="text" name="isbn" id="isbn">
+                        </td>
+                        <td>
+                            <p id="isbnHint"></p>
                         </td>
                     </tr>
                     <tr>
@@ -93,4 +96,17 @@
         </form>
     </div>
 </body>
+<script>
+    $(function () {
+        $("input#isbn").blur(function () {
+            console.log("eeee");
+            $.ajax({
+                url: "book/exists.action",
+                error: function (status, xhr) {
+                    console.log(status)
+                }
+            })
+        })
+    })
+</script>
 </html>

@@ -2,6 +2,8 @@ package com.lingnan.mybatisdemo.view;
 
 import com.lingnan.mybatisdemo.bean.BookVo;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import javafx.concurrent.ScheduledService;
+import javafx.concurrent.Task;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +18,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Controller
 public class DemoController {
 
     private Logger logger = Logger.getLogger(this.getClass());
+    //
+    private LocalDate lastInvokeDate = null;
+
+    private Timer timer = null;
 
     @RequestMapping("/demo/input")
     public String input(Model model, HttpServletRequest request,
@@ -56,10 +65,38 @@ public class DemoController {
         request.getRequestDispatcher("/jsps/inputResult.jsp").forward(request, response);
     }
 
-    @RequestMapping(value = "/demo/input2/{isbn}/{bookName}")
+    @RequestMapping(value = "/demo/input2/{isbn}/{bookName}.action")
     public void input(@PathVariable(value = "isbn") String isbn, @PathVariable(value = "bookName") String bookName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.logger.info(request);
         this.logger.info(response);
+        this.logger.info(request.getContextPath());
         request.getRequestDispatcher("/jsps/inputResult.jsp").forward(request, response);
+    }
+
+    @RequestMapping("/demo/startExam")
+    public String startExam(){
+
+        this.lastInvokeDate = LocalDate.now();
+
+        this.timer = new Timer("examTiming", true);
+        this.timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+            }
+        }, 1000);
+
+        return "inputResult";
+    }
+
+}
+
+class MyScheduleService extends ScheduledService<Void>{
+
+    @Override
+    protected Task<Void> createTask() {
+
+
+        return null;
     }
 }

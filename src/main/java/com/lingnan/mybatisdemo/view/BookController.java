@@ -110,4 +110,14 @@ public class BookController {
     }
 
 
+    @RequestMapping("/exists")
+    @ResponseBody
+    public String  exists(){
+
+//        List<Book> books = this.bookService.findBookWithBookCondition(book);
+//        if(books.size() != 0)
+            return "{success: true}";
+//        return "{success: false}";
+    }
+
 }

@@ -53,7 +53,6 @@
     </bean>
 
 
-    <!--视图处理器-->
     <bean id="viewResolver"
           class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass"
@@ -74,4 +73,6 @@
 
     <!--自定义异常处理器-->
     <!--<bean id="exceptionResolver" class="com.lingnan.mybatisdemo.Exception.CustomExceptionResolver"/>-->
+
+    <!--拦截器-->
 </beans>
