@@ -1,11 +1,13 @@
 package com.lingnan.mybatisdemo.view;
 
 
+import com.fasterxml.jackson.databind.util.JSONWrappedObject;
 import com.lingnan.mybatisdemo.bean.Book;
 import com.lingnan.mybatisdemo.bean.Category;
 import com.lingnan.mybatisdemo.bean.Pager;
 import com.lingnan.mybatisdemo.service.IBookService;
 import com.lingnan.mybatisdemo.service.ICategoryService;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,9 +18,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -71,13 +77,33 @@ public class BookController {
     }
 
     @RequestMapping("/toAddBook")
-    public String toAddBook(Model model, @Validated Book book, BindingResult bindingResult){
+    public String toAddBook(Model model,
+                            MultipartFile image,
+                            HttpSession session,
+                            @Validated Book book,
+                            BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()){
             List<ObjectError> objectErrors = bindingResult.getAllErrors();
             objectErrors.forEach(this.logger::debug);
             model.addAttribute("errors", objectErrors);
             return "forward:/book/addBook.action";
         }
+
+        //uploads路径
+        String path = session.getServletContext().getRealPath("/uploads");
+        this.logger.info(session.getServletContext().getRealPath("."));
+        String fileName = image.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf('.'));
+        String id = UUID.randomUUID().toString();
+        File filePath = new File(path, id + suffix);
+
+        if (!filePath.getParentFile().exists()){
+            filePath.getParentFile().mkdirs();
+        }
+        image.transferTo(filePath);
+        this.logger.info(id + suffix);
+        book.setBookImage("uploads/" + id + suffix);
+
 
         this.logger.info(book);
         int count = this.bookService.addBooks(Collections.singletonList(book));
@@ -109,10 +135,27 @@ public class BookController {
         return "{success: true}";
     }
 
+    @RequestMapping("/search")
+    @ResponseBody
+    public String search(Book book){
+        this.logger.info(book);
+        int size = this.bookService.findBookWithBookCondition(book).size();
+        if (size != 0)
+            return "{success: true}";
+        return "{success: false}";
+    }
+
+    @RequestMapping("/findAllBooks")
+    @ResponseBody
+    public List<Book> getAllBooks(){
+        List<Book> books = this.bookService.findAll();
+        return books;
+    }
 
     @RequestMapping("/exists")
     @ResponseBody
     public String  exists(){
+
 
 //        List<Book> books = this.bookService.findBookWithBookCondition(book);
 //        if(books.size() != 0)

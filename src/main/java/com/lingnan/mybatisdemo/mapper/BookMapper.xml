@@ -6,7 +6,7 @@
 
 
     <select id="getBooksByCategoryName" parameterType="javafx.beans.property.SimpleStringProperty" resultType="Book">
-        SELECT book.book_name bookName, book.isbn, book.price, book.publish_date publishDate, book.publisher
+        SELECT book.book_name bookName, book.isbn, book.price, book.publish_date publishDate, book.publisher, book.book_image bookImage
         from book WHERE book.category_id IN (
             SELECT category.id FROM category
             WHERE category.name LIKE
@@ -26,11 +26,12 @@
         <result column="book_price" property="price"/>
         <result column="publish_date" property="publishDate"/>
         <result column="publisher" property="publisher"/>
+        <result column="book_image" property="bookImage"/>
         <association property="category" column="category_id" select="selectCategoryForBook" />
     </resultMap>
 
     <select id="findAllBooks" resultMap="selectBooks">
-        SELECT book.isbn, book.book_name , book.category_id , book.price, book.publish_date , book.publisher
+        SELECT book.isbn, book.book_name , book.category_id , book.price, book.publish_date , book.publisher, book.book_image
         FROM book
     </select>
 
@@ -41,6 +42,7 @@
         <result column="book_price" property="price"/>
         <result column="publish_date" property="publishDate"/>
         <result column="publisher" property="publisher"/>
+        <result column="book_image" property="bookImage"/>
         <association property="category" column="category_id"  javaType="com.lingnan.mybatisdemo.bean.Category">
             <id column="category_id" property="id"/>
             <result column="name" property="name"/>
@@ -57,8 +59,8 @@
     <select id="findBookWithBookCondition" resultType="Book" parameterType="Book">
         SELECT *
         FROM book
-        <if test="bookName != null">
-            WHERE book_name LIKE '%' || #{bookName} || '%'
+        <if test="isbn != null">
+            WHERE isbn = #{isbn}
         </if>
     </select>
 
@@ -170,7 +172,7 @@
             <trim prefix="values">
                 <foreach collection="list" separator="," item="item" index="index">
                     (#{item.isbn}, #{item.bookName}, #{item.price},
-                    #{item.publishDate}, #{item.publisher}, #{item.category.id})
+                    #{item.publishDate}, #{item.publisher}, #{item.category.id}, #{item.bookImage})
                 </foreach>
             </trim>
     </insert>

@@ -43,13 +43,16 @@
             <br/>
         </c:forEach>
 
-        <form  action="book/toAddBook.action" method="post">
+        <form  action="book/toAddBook.action" method="post" enctype="multipart/form-data">
             <table class="table table-striped table-bordered">
                 <tbody>
                     <tr>
                         <td>ISBN</td>
                         <td>
                             <input title="ISBN" type="text" name="isbn" id="isbn">
+                        </td>
+                        <td>
+                            <p id="isbnHint"></p>
                         </td>
                         <td>
                             <p id="isbnHint"></p>
@@ -80,6 +83,13 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>封面图片</td>
+                        <td>
+                            <%--设置为bookImage会因为类型不一而发生异常--%>
+                            <input type="file" name="image">
+                        </td>
+                    </tr>
+                    <tr>
                         <td>分类</td>
                         <td>
                             <select name="category.id">
@@ -94,14 +104,46 @@
             <input type="submit" name="提交">
             <input type="reset" name="重置">
         </form>
+        <div class="clearfix row">
+
+        </div>
     </div>
 </body>
 <script>
     $(function () {
-        $("input#isbn").blur(function () {
-            console.log("eeee");
+
+        $("input[title=ISBN]").blur(function () {
+            console.log(this)
             $.ajax({
-                url: "book/exists.action",
+                url: "${pageContext.request.contextPath}/book/search.action",
+                data: {isbn: $(this).val()},
+                sync: false,
+                success: function (res, status, xhr) {
+                    var json = eval( '(' + res + ')')
+                    if (json.success)
+                        $("p#isbnHint").html("ISBN已经存在")
+                    else
+                        $("p#isbnHint").html("该ISBN合法")
+
+                },
+                error: function (status, xhr) {
+                    console.log(status)
+                }
+            })
+        })
+//        -----------------
+
+        $("input[type = 'reset']").click(function () {
+            $.ajax({
+                url: "book/findAllBooks.action",
+                sync: false,
+                success: function (res, status, xhr) {
+//                    var json = $.parseJSON(res
+                    $.each(res, function (k, v) {
+                        var tag = '<p>' + v['isbn'] + v['bookName'] + new Date(v['publishDate']) + '</p>';
+                        $("div.clearfix").append(tag)
+                    })
+                },
                 error: function (status, xhr) {
                     console.log(status)
                 }

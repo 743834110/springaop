@@ -39,7 +39,7 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public List<Book> findBookWithBookCondition(Book book) {
-        return null;
+        return this.bookMapper.findBookWithBookCondition(book);
     }
 
     @Override

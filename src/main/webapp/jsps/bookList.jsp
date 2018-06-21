@@ -89,6 +89,7 @@
                     <th>价格</th>
                     <th>出版社</th>
                     <th>出版时间</th>
+                    <td>图片</td>
                     <th>分类</th>
                     <th>操作</th>
                 </tr>
@@ -100,6 +101,7 @@
                         <td>${book.price}</td>
                         <td>${book.publisher}</td>
                         <td>${book.publishDate.toLocaleString()}</td>
+                        <td><img width="30px" src="${book.bookImage}" alt=""/></td>
                         <td>${book.category.name}</td>
                         <td>
                             <a href="" id="">修改</a>

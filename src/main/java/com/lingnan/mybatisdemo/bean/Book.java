@@ -2,6 +2,7 @@ package com.lingnan.mybatisdemo.bean;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -11,10 +12,12 @@ public class Book {
     @NotBlank(message = "{bookName.not.message}")
     @Size(min = 1, max = 50, message = "{bookName.size.message}")
     private String bookName;
-    @NotBlank(message = "{price.message}")
+    @NotNull(message = "{price.message}")
     private Double price;  //价格要以整数表示
     private Date  publishDate;
     private String publisher;
+    private String bookImage;
+
 
     //Mybatis
     private Category category;
@@ -80,6 +83,15 @@ public class Book {
         this.category = category;
     }
 
+
+    public String getBookImage() {
+        return bookImage;
+    }
+
+    public void setBookImage(String bookImage) {
+        this.bookImage = bookImage;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -88,6 +100,7 @@ public class Book {
                 ", price=" + price +
                 ", publishDate=" + publishDate +
                 ", publisher='" + publisher + '\'' +
+                ", bookImage='" + bookImage + '\'' +
                 ", category=" + category +
                 '}';
     }

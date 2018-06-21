@@ -38,6 +38,9 @@
                 <c:out value="${book}"/>
             </c:forEach>
         </pre>
+        <div>
+        </div>
+
         <div class="clearfix row">
         </div>
     </div>

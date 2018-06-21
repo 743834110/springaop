@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -85,18 +86,13 @@ public class DemoController {
 
             }
         }, 1000);
-
         return "inputResult";
     }
 
-}
 
-class MyScheduleService extends ScheduledService<Void>{
-
-    @Override
-    protected Task<Void> createTask() {
-
-
-        return null;
+    @RequestMapping("/demo/upload")
+    public String upload(MultipartFile file, HttpSession session){
+        return "";
     }
 }
+
