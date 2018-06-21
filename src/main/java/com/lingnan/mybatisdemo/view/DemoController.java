@@ -66,7 +66,7 @@ public class DemoController {
         request.getRequestDispatcher("/jsps/inputResult.jsp").forward(request, response);
     }
 
-    @RequestMapping(value = "/demo/input2/{isbn}/{bookName}.action")
+    @RequestMapping(value = "/demo/input2/{isbn}/{bookName}")
     public void input(@PathVariable(value = "isbn") String isbn, @PathVariable(value = "bookName") String bookName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         this.logger.info(request);
         this.logger.info(response);
