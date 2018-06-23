@@ -1,13 +1,14 @@
 package com.lingnan.mybatisdemo.bean;
 
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 分页实体类
  * 基于分页类进行排序等基本需求
  */
-public class Pager<T> {
+public class Pager<T> implements Serializable{
 
     private Integer currentPage = 1;    // 第几页
     private Integer pageSize = 10;      // 页的大小

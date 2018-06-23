@@ -5,6 +5,7 @@
         xmlns:context="http://www.springframework.org/schema/context"
         xmlns:aop="http://www.springframework.org/schema/aop"
         xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:p="http://www.springframework.org/schema/p" xmlns:cache="http://www.springframework.org/schema/cache"
         xsi:schemaLocation=
                 "http://www.springframework.org/schema/beans
                  http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -13,18 +14,15 @@
                  http://www.springframework.org/schema/aop
                  http://www.springframework.org/schema/aop/spring-aop.xsd
                  http://www.springframework.org/schema/tx
-                 http://www.springframework.org/schema/tx/spring-tx.xsd
-
-                ">
+                 http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <context:annotation-config/>
     <context:component-scan base-package="com.lingnan.mybatisdemo.service"/>
 
 
 
-    <bean id="book" class="com.lingnan.mybatisdemo.bean.Book"/>
     <!--引入外部属性文件-->
-    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+    <context:property-placeholder location="classpath:config/jdbc.properties, classpath:config/redis.properties"/>
 
     <!--定义数据源-->
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
@@ -56,4 +54,34 @@
         <property name="dataSource" ref="dataSource" />
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--集成redis-->
+    <cache:annotation-driven cache-manager="redisCacheManager"/>
+
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxIdle" value="${redis.maxIdle}"/>
+        <property name="maxTotal" value="${redis.maxActive}"/>
+        <property name="maxWaitMillis" value="${redis.maxWait}"/>
+        <property name="testOnBorrow" value="${redis.testOnBorrow}"/>
+    </bean>
+
+
+    <bean id="jedisConnFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="database" value="${redis.dbIndex}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="hostName" value="${redis.host}"/>
+        <property name="timeout" value="${redis.timeout}"/>
+        <property name="poolConfig" ref="poolConfig"/>
+    </bean>
+
+    <!-- redis template definition -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connectionFactory-ref="jedisConnFactory"/>
+    <!--配置缓存管理器-->
+    <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">
+        <constructor-arg name="redisOperations" ref="redisTemplate"/>
+        <property name="defaultExpiration" value="${redis.expiration}"/>
+    </bean>
 </beans>
+

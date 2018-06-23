@@ -7,6 +7,7 @@ import com.lingnan.mybatisdemo.service.IBookService;
 import javafx.beans.property.SimpleStringProperty;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class BookServiceImpl implements IBookService {
     }
 
     @Override
+
     public List<Book> findAll() {
         return this.bookMapper.findAllBooks();
     }
@@ -75,11 +77,14 @@ public class BookServiceImpl implements IBookService {
 
 
     @Override
+    @Cacheable(value = "findByPager")
     public List<Book> findByPager(Pager<Book> pager) {
+        this.logger.info("调用该方法。。。。。。");
         return this.bookMapper.findByPager(pager);
     }
 
     @Override
+    @Cacheable("countForPager")
     public int countForPager(Pager<Book> pager) {
         // TODO 处理浏览器端尚为填补到数据
         this.logger.info(pager);

@@ -4,6 +4,7 @@ import com.lingnan.mybatisdemo.bean.Category;
 import com.lingnan.mybatisdemo.mapper.CategoryMapper;
 import com.lingnan.mybatisdemo.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class CategoryServiceImpl implements ICategoryService{
     private CategoryMapper mapper;
 
     @Override
+    @Cacheable("findAllCategories")
     public List<Category> findAllCategories() {
         return this.mapper.findAllCategory();
     }
