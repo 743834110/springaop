@@ -94,9 +94,9 @@
     <!--配置静态资源的映射路径-->
     <!--location对应文件系统中的地址-->
     <!--mapping对应于访问的地址-->
-    <!--<mvc:resources mapping="/bootstrap/**" location="/bootstrap/"/>-->
-    <!--<mvc:resources mapping="/uploads/**" location="/uploads/"/>-->
-    <!--<mvc:resources mapping="/images/**" location="/images/"/>-->
+    <mvc:resources mapping="/bootstrap/**" location="/bootstrap/"/>
+    <mvc:resources mapping="/uploads/**" location="/uploads/"/>
+    <mvc:resources mapping="/images/**" location="/images/"/>
 
     <!--上传组件-->
     <bean id="multipartResolver"

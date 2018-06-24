@@ -1,5 +1,7 @@
 package com.lingnan.mybatisdemo.filter;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,10 +12,13 @@ public class LoginFilter implements Filter{
 
     private String[] welcomeURI = {
             "login",
-            "register"
+            "register",
+            "bootstrap",
+            "images"
     };
 
-    public boolean welcome(HttpServletRequest request){
+    private Logger logger = Logger.getLogger(this.getClass());
+    private boolean welcome(HttpServletRequest request){
 
         String requestURI = request.getRequestURI();
 
@@ -39,6 +44,7 @@ public class LoginFilter implements Filter{
         HttpSession session = ((HttpServletRequest) request).getSession();
 
         if (session.getAttribute("LOGIN_USER") != null || this.welcome(request1)) {
+            this.logger.info("loginFilter:" + request1.getRequestURI());
             chain.doFilter(request, response);
             return;
         }

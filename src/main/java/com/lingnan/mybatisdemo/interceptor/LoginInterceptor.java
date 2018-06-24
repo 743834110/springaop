@@ -12,7 +12,6 @@ public class LoginInterceptor implements HandlerInterceptor{
 
     private Logger logger = Logger.getLogger(this.getClass());
     private String[] welcomeURI = {
-            "login",
             "register"
     };
 
