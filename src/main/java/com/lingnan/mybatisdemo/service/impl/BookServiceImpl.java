@@ -66,7 +66,7 @@ public class BookServiceImpl implements IBookService {
 
     @Override
     public int updateBooks(List<Book> bookList) {
-        return 0;
+        return this.bookMapper.updateBooks(bookList);
     }
 
     @Override

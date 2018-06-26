@@ -15,7 +15,7 @@
         3：定义调度器，并将Trigger注册到Scheduler
      -->
     <!--RAM存储方式的xml配置文件-->
-    <bean id="hwJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+    <bean scope="prototype" id="hwJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
         <property name="name" value="hwJob"/>
         <property name="group" value="hwJobGroup"/>
         <property name="jobClass" value="com.lingnan.mybatisdemo.job.HelloWorldJob"/>
@@ -38,18 +38,10 @@
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <property name="name" value="hwTrigger"/>
         <property name="group" value="hwTriggerGroup"/>
-        <property name="jobDetail" ref="hwJob"/>
         <!--秒 分 时 日期 月 星期 年-->
         <property name="cronExpression" value="*/5 * * * * ? *"/>
     </bean>
 
-    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <property name="triggers">
-            <list>
-                <ref bean="simpleTrigger"/>
-                <ref bean="cronTrigger"/>
-            </list>
-        </property>
-        <property name="autoStartup" value="false"/>
+    <bean id="stdScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     </bean>
 </beans>

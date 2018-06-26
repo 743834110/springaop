@@ -6,10 +6,11 @@ import com.google.gson.JsonObject;
 import com.lingnan.mybatisdemo.bean.Book;
 import com.lingnan.mybatisdemo.bean.Category;
 import com.lingnan.mybatisdemo.bean.Pager;
+import com.lingnan.mybatisdemo.job.HelloWorldJob;
 import com.lingnan.mybatisdemo.service.IBookService;
 import com.lingnan.mybatisdemo.service.ICategoryService;
 import org.apache.log4j.Logger;
-import org.quartz.SchedulerException;
+import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,19 +20,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import sun.rmi.runtime.Log;
 
+import javax.persistence.Temporal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/job")
+@RequestMapping("job")
 public class JobController {
 
     private Logger logger = Logger.getLogger(this.getClass());
 
+
     @Autowired
-    private StdScheduler stdScheduler = null;
+    private Scheduler scheduler = null;
+
+
+    @Autowired
+    private JobDetail jobDetail;
+
+    @Autowired
+    private CronTrigger trigger;
+
 
     @Autowired
     private IBookService bookService = null;
@@ -66,11 +77,20 @@ public class JobController {
     }
 
 
-    @RequestMapping("/test")
-    public String test(){
+    @RequestMapping("start")
+    @ResponseBody
+    public String start(String jobKey) throws SchedulerException {
         this.logger.info("考试服务启动。。。。。。");
-//        this.stdScheduler.start();
-        this.logger.info("eeeeee");
+
+
+        return "{success: true}";
+    }
+
+    @ResponseBody
+    @RequestMapping("/stop")
+    public String stop() throws SchedulerException {
+        this.scheduler.shutdown(true);
+//        this.scheduler.deleteJob(new JobKey(""));
         return "";
     }
 
@@ -80,7 +100,6 @@ public class JobController {
     public List<Category> getCategories(){
 
         List<Category> categories = this.categoryService.findAllCategories();
-
         return categories;
     }
 
@@ -89,7 +108,7 @@ public class JobController {
     public String saveBook(Book book){
 
         Map<String, Object> result = new HashMap<>();
-
+        this.logger.info(book);
         int count = this.bookService.addBooks(Collections.singletonList(book));
 
         this.logger.info("添加书籍");
@@ -103,6 +122,38 @@ public class JobController {
         }
 
 
+        return new Gson().toJson(result);
+    }
+
+    @ResponseBody
+    @RequestMapping("updateBook")
+    public String updateBook(Book book){
+        this.logger.info(book);
+        int count = this.bookService.updateBooks(Collections.singletonList(book));
+        Map<String, Object> map = new HashMap<>();
+        if (count != 0){
+            map.put("success", true);
+            return new Gson().toJson(map);
+        }
+        map.put("success", false);
+        map.put("errMsg", "更新失败");
+        return new Gson().toJson(map);
+    }
+
+
+    @RequestMapping("deleteBook")
+    @ResponseBody
+    public String deleteBook( Integer isbn){
+        this.logger.info(isbn);
+
+
+        int count = this.bookService.deleteByIsbnList(new String[] {isbn.toString()});
+        Map<String ,Object> result = new HashMap<>();
+        if (count != 0){
+            return "{success : true}";
+        }
+        result.put("success", false);
+        result.put("errorMsg", "删除异常");
         return new Gson().toJson(result);
     }
 

@@ -25,7 +25,8 @@ public class RedisTest {
 
     @Before
     public void init(){
-        context = new ClassPathXmlApplicationContext("config/applicationContext.xml","config/application-mvc.xml");
+        context = new ClassPathXmlApplicationContext("config/applicationContext.xml",
+                "config/application-mvc.xml", "config/application-quartz.xml");
         this.redisTemplate = this.context.getBean(RedisTemplate.class);
     }
 

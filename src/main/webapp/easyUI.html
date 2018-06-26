@@ -34,11 +34,13 @@
             </thead>
         </table>
         <div id="toolbar">
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">新增书籍</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">编辑书籍</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除书籍</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBook()">新增书籍</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBook()">编辑书籍</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyBook()">删除书籍</a>
         </div>
 
+
+        <!--对话框-->
         <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
             <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
                 <h3>书籍信息</h3>
@@ -52,17 +54,18 @@
                     <input name="publisher" class="easyui-textbox" required="true" label="出版社:" style="width:100%">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="price" class="easyui-textbox" required="true" validType="email" label="价格:" style="width:100%">
+                    <input name="price" class="easyui-textbox" label="价格:" style="width:100%">
                 </div>
                 <div style="margin-bottom:10px">
-                    <input name="publishDate" class="easyui-datebox" required="true" validType="email" label="出版日期:" data-options="formatter:myformatter,parser:myparser" style="width:100%">
+                    <input name="publishDate" class="easyui-datebox" required="true"  label="出版日期:" data-options="formatter:myformatter,parser:myparser" style="width:100%">
                 </div>
                 <script type="text/javascript">
+//                    传输的日期格式
                     function myformatter(date){
                         var y = date.getFullYear();
                         var m = date.getMonth()+1;
                         var d = date.getDate();
-                        return y+'/'+(m<10?('0'+m):m)+'/'+(d<10?('0'+d):d);
+                        return y+'-'+(m<10?('0'+m):m)+'-'+(d<10?('0'+d):d);
                     }
                     function myparser(s){
                         if (!s) return new Date();
@@ -78,14 +81,13 @@
                     }
                 </script>
                 <div style="margin-bottom:10px">
-
-                    <select id="category" name="category.id" class="easyui-combobox" required="true" validType="email" label="分类:" style="width:100%" data-options="valueField:'id', textField:'name', autoHeight: 'auto'">
+                    <select id="category" name="category.id" class="easyui-combobox"  label="分类:" style="width:100%" data-options="valueField:'id', textField:'name', autoHeight: 'auto'">
                     </select>
                 </div>
             </form>
         </div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBook()" style="width:90px">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
@@ -93,39 +95,46 @@
 
 <script type="text/javascript">
     var url;
-    function newUser(){
+    function newBook(){
         $('#dlg').dialog('open').dialog('center').dialog('setTitle','新增书籍');
         $('#fm').form('clear');
-        url = 'save_user.php';
+        flashCategories();
+        url = 'job/saveBook'
+    }
+
+    function flashCategories() {
+        url = "job/getCategories"
         $.ajax({
-            url: "job/getCategories",
+            url: url,
             error: function (status, xhr) {
                 console.log()
             },
             success: function (res, status, xhr) {
-
                 $("#category").combobox("loadData", res)
-
             }
         })
     }
-    function editUser(){
+
+    function editBook(){
         var row = $('#dg').datagrid('getSelected');
         if (row){
             $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
             $('#fm').form('load',row);
-            url = 'update_user.php?id='+row.id;
+            flashCategories()
+            url = 'job/updateBook';
         }
     }
-    function saveUser(){
+    function saveBook(){
+        console.log("当前的URL为:" + url)
         $('#fm').form('submit',{
-            url: 'job/saveBook',
+            url: url,
             onSubmit: function(){
                 return $(this).form('validate');
             },
             success: function(result){
+                console.log(result)
                 var result = eval('('+result+')');
-                if (result.errorMsg){
+                if (!result.success){
                     $.messager.show({
                         title: 'Error',
                         msg: result.errorMsg
@@ -137,12 +146,13 @@
             }
         });
     }
-    function destroyUser(){
+    function destroyBook(){
         var row = $('#dg').datagrid('getSelected');
         if (row){
             $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
                 if (r){
-                    $.post('destroy_user.php',{id:row.id},function(result){
+                    console.log(row)
+                    $.post('job/deleteBook',{isbn:row.isbn},function(result){
                         if (result.success){
                             $('#dg').datagrid('reload');    // reload the user data
                         } else {
@@ -154,6 +164,7 @@
                     },'json');
                 }
             });
+            $('#dg').datagrid('reload');    // reload the user data
         }
     }
 </script>
