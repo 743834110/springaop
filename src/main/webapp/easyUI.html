@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="https://www.jeasyui.com/easyui/demo/demo.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="https://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
+
+
+
+
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+</head>
+<body>
+    <div class="container">
+        <table id="dg" title="My Users" class="easyui-datagrid" style="width:700px;height:250px"
+               url="job/books"
+               toolbar="#toolbar" pagination="true"
+               rownumbers="true" fitColumns="true" singleSelect="true">
+            <thead>
+            <tr>
+                <th field="isbn" width="50">isbn</th>
+                <th field="bookName" width="50">bookName</th>
+                <th field="publisher" width="50">publisher</th>
+                <th field="price" width="50">price</th>
+                <th field="publishDate" width="50">publishDate</th>
+            </tr>
+            </thead>
+        </table>
+        <div id="toolbar">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUser()">新增书籍</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUser()">编辑书籍</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">删除书籍</a>
+        </div>
+
+        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'">
+            <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
+                <h3>书籍信息</h3>
+                <div style="margin-bottom:10px">
+                    <input name="isbn" class="easyui-textbox" required="true" label="isbn:" style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="bookName" class="easyui-textbox" required="true" label="书籍名称:" style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="publisher" class="easyui-textbox" required="true" label="出版社:" style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="price" class="easyui-textbox" required="true" validType="email" label="价格:" style="width:100%">
+                </div>
+                <div style="margin-bottom:10px">
+                    <input name="publishDate" class="easyui-datebox" required="true" validType="email" label="出版日期:" data-options="formatter:myformatter,parser:myparser" style="width:100%">
+                </div>
+                <script type="text/javascript">
+                    function myformatter(date){
+                        var y = date.getFullYear();
+                        var m = date.getMonth()+1;
+                        var d = date.getDate();
+                        return y+'/'+(m<10?('0'+m):m)+'/'+(d<10?('0'+d):d);
+                    }
+                    function myparser(s){
+                        if (!s) return new Date();
+                        var ss = (s.split('-'));
+                        var y = parseInt(ss[0],10);
+                        var m = parseInt(ss[1],10);
+                        var d = parseInt(ss[2],10);
+                        if (!isNaN(y) && !isNaN(m) && !isNaN(d)){
+                            return new Date(y,m-1,d);
+                        } else {
+                            return new Date();
+                        }
+                    }
+                </script>
+                <div style="margin-bottom:10px">
+
+                    <select id="category" name="category.id" class="easyui-combobox" required="true" validType="email" label="分类:" style="width:100%" data-options="valueField:'id', textField:'name', autoHeight: 'auto'">
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div id="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+    </div>
+</body>
+
+<script type="text/javascript">
+    var url;
+    function newUser(){
+        $('#dlg').dialog('open').dialog('center').dialog('setTitle','新增书籍');
+        $('#fm').form('clear');
+        url = 'save_user.php';
+        $.ajax({
+            url: "job/getCategories",
+            error: function (status, xhr) {
+                console.log()
+            },
+            success: function (res, status, xhr) {
+
+                $("#category").combobox("loadData", res)
+
+            }
+        })
+    }
+    function editUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
+            $('#fm').form('load',row);
+            url = 'update_user.php?id='+row.id;
+        }
+    }
+    function saveUser(){
+        $('#fm').form('submit',{
+            url: 'job/saveBook',
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                var result = eval('('+result+')');
+                if (result.errorMsg){
+                    $.messager.show({
+                        title: 'Error',
+                        msg: result.errorMsg
+                    });
+                } else {
+                    $('#dlg').dialog('close');        // close the dialog
+                    $('#dg').datagrid('reload');    // reload the user data
+                }
+            }
+        });
+    }
+    function destroyUser(){
+        var row = $('#dg').datagrid('getSelected');
+        if (row){
+            $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+                if (r){
+                    $.post('destroy_user.php',{id:row.id},function(result){
+                        if (result.success){
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.errorMsg
+                            });
+                        }
+                    },'json');
+                }
+            });
+        }
+    }
+</script>
+</html>
