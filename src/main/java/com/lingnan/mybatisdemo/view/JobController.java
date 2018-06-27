@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,15 +34,12 @@ public class JobController {
     private Logger logger = Logger.getLogger(this.getClass());
 
 
+    //    一个job 可以对应多个触发器，但一个触发器只能对应一个job
     @Autowired
     private Scheduler scheduler = null;
 
-
     @Autowired
-    private JobDetail jobDetail;
-
-    @Autowired
-    private CronTrigger trigger;
+    private ApplicationContext context;
 
 
     @Autowired
@@ -79,8 +77,15 @@ public class JobController {
 
     @RequestMapping("start")
     @ResponseBody
-    public String start(String jobKey) throws SchedulerException {
+    public String start(@RequestParam String jobKeyString) throws SchedulerException {
         this.logger.info("考试服务启动。。。。。。");
+
+        JobDetail newJob = this.context.getBean(JobDetail.class)
+                .getJobBuilder().withIdentity(jobKeyString).build();
+        Trigger trigger = this.context.getBean(Trigger.class);
+
+        this.scheduler.scheduleJob(newJob, trigger);
+        this.scheduler.start();
 
 
         return "{success: true}";
@@ -89,8 +94,8 @@ public class JobController {
     @ResponseBody
     @RequestMapping("/stop")
     public String stop() throws SchedulerException {
+
         this.scheduler.shutdown(true);
-//        this.scheduler.deleteJob(new JobKey(""));
         return "";
     }
 

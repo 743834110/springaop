@@ -56,7 +56,7 @@
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <!--集成redis-->
-    <cache:annotation-driven cache-manager="redisCacheManager"/>
+    <!--<cache:annotation-driven cache-manager="redisCacheManager"/>-->
 
     <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
         <property name="maxIdle" value="${redis.maxIdle}"/>

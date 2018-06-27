@@ -15,5 +15,11 @@ public class HelloWorldJob implements Job{
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
+
+        JobDetail jobDetail = context.getJobDetail();
+        JobKey key = jobDetail.getKey();
+        this.logger.info(key.getName() + ":" + new Date());
+
+
     }
 }

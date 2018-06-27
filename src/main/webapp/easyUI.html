@@ -19,7 +19,7 @@
 </head>
 <body>
     <div class="container">
-        <table id="dg" title="My Users" class="easyui-datagrid" style="width:700px;height:250px"
+        <table id="dg" title="My Users" class="easyui-datagrid" width="100%"
                url="job/books"
                toolbar="#toolbar" pagination="true"
                rownumbers="true" fitColumns="true" singleSelect="true">
@@ -29,7 +29,8 @@
                 <th field="bookName" width="50">bookName</th>
                 <th field="publisher" width="50">publisher</th>
                 <th field="price" width="50">price</th>
-                <th field="publishDate" width="50">publishDate</th>
+                <th field="publishDate" width="50" data-options="formatter:dateFormatter">publishDate</th>
+                <th field="category" width="50" data-options="formatter:categoryFormatter">category</th>
             </tr>
             </thead>
         </table>
@@ -45,7 +46,7 @@
             <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
                 <h3>书籍信息</h3>
                 <div style="margin-bottom:10px">
-                    <input name="isbn" class="easyui-textbox" required="true" label="isbn:" style="width:100%">
+                    <input id="isbn" name="isbn" class="easyui-textbox" required="true" label="isb888n:" style="width:100%">
                 </div>
                 <div style="margin-bottom:10px">
                     <input name="bookName" class="easyui-textbox" required="true" label="书籍名称:" style="width:100%">
@@ -60,7 +61,20 @@
                     <input name="publishDate" class="easyui-datebox" required="true"  label="出版日期:" data-options="formatter:myformatter,parser:myparser" style="width:100%">
                 </div>
                 <script type="text/javascript">
+                    function categoryFormatter(category) {
+
+                        if (category == null)
+                            return "无分类";
+                        return category.name;
+                    }
 //                    传输的日期格式
+                    function dateFormatter(dateString) {
+                        if (!dateString)
+                            return "无";
+                        return myformatter(new Date(dateString));
+                    }
+
+
                     function myformatter(date){
                         var y = date.getFullYear();
                         var m = date.getMonth()+1;
@@ -81,8 +95,20 @@
                     }
                 </script>
                 <div style="margin-bottom:10px">
-                    <select id="category" name="category.id" class="easyui-combobox"  label="分类:" style="width:100%" data-options="valueField:'id', textField:'name', autoHeight: 'auto'">
+                    <select id="category" name="category.id" class="easyui-combobox"  label="分类:" style="width:100%" data-options="
+                    valueField:'id', textField:'name', autoHeight: 'auto'">
                     </select>
+                    <!--<script>-->
+                        <!--function selectedFunc(data) {-->
+                            <!--$.each(data, function (k, v) {-->
+                                   <!--if (row.category.name == v.name) {-->
+                                       <!--console.log(row.category.name)-->
+                                       <!--console.log(v.id)-->
+                                       <!--$("#category").combobox("select", v.id)-->
+                                   <!--}-->
+                            <!--})-->
+                        <!--}-->
+                    <!--</script>-->
                 </div>
             </form>
         </div>
@@ -91,81 +117,84 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
-</body>
-
-<script type="text/javascript">
-    var url;
-    function newBook(){
-        $('#dlg').dialog('open').dialog('center').dialog('setTitle','新增书籍');
-        $('#fm').form('clear');
-        flashCategories();
-        url = 'job/saveBook'
-    }
-
-    function flashCategories() {
-        url = "job/getCategories"
-        $.ajax({
-            url: url,
-            error: function (status, xhr) {
-                console.log()
-            },
-            success: function (res, status, xhr) {
-                $("#category").combobox("loadData", res)
-            }
-        })
-    }
-
-    function editBook(){
-        var row = $('#dg').datagrid('getSelected');
-        if (row){
-            $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
-            $('#fm').form('load',row);
-            flashCategories()
-            url = 'job/updateBook';
+    <script type="text/javascript">
+        var url;
+        function newBook(){
+            $('#dlg').dialog('open').dialog('center').dialog('setTitle','新增书籍');
+            $('#fm').form('clear');
+            flashCategories();
+            url = 'job/saveBook'
         }
-    }
-    function saveBook(){
-        console.log("当前的URL为:" + url)
-        $('#fm').form('submit',{
-            url: url,
-            onSubmit: function(){
-                return $(this).form('validate');
-            },
-            success: function(result){
-                console.log(result)
-                var result = eval('('+result+')');
-                if (!result.success){
-                    $.messager.show({
-                        title: 'Error',
-                        msg: result.errorMsg
-                    });
-                } else {
-                    $('#dlg').dialog('close');        // close the dialog
-                    $('#dg').datagrid('reload');    // reload the user data
-                }
-            }
-        });
-    }
-    function destroyBook(){
-        var row = $('#dg').datagrid('getSelected');
-        if (row){
-            $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
-                if (r){
+
+        function flashCategories(row) {
+            url = "job/getCategories"
+            $.ajax({
+                url: url,
+                error: function (status, xhr) {
+                    console.log()
+                },
+                success: function (res, status, xhr) {
+                    $("#category").combobox("loadData", res)
+                    $("#category").combobox("select", row.category.id)
                     console.log(row)
-                    $.post('job/deleteBook',{isbn:row.isbn},function(result){
-                        if (result.success){
-                            $('#dg').datagrid('reload');    // reload the user data
-                        } else {
-                            $.messager.show({    // show error message
-                                title: 'Error',
-                                msg: result.errorMsg
-                            });
-                        }
-                    },'json');
+                }
+            })
+        }
+
+        function editBook(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('center').dialog('setTitle','Edit User');
+                $('#fm').form('load',row);
+                flashCategories(row)
+                $("#isbn").attr("readonly", true)
+
+                url = 'job/updateBook';
+            }
+        }
+        function saveBook(){
+            console.log("当前的URL为:" + url)
+            $('#fm').form('submit',{
+                url: url,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    console.log(result)
+                    var result = eval('('+result+')');
+                    if (!result.success){
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.errorMsg
+                        });
+                    } else {
+                        $('#dlg').dialog('close');        // close the dialog
+                        $('#dg').datagrid('reload');    // reload the user data
+                    }
                 }
             });
-            $('#dg').datagrid('reload');    // reload the user data
         }
-    }
-</script>
+        function destroyBook(){
+            var row = $('#dg').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('Confirm','Are you sure you want to destroy this user?',function(r){
+                    if (r){
+                        console.log(row)
+                        $.post('job/deleteBook',{isbn:row.isbn},function(result){
+                            if (result.success){
+                                $('#dg').datagrid('reload');    // reload the user data
+                            } else {
+                                $.messager.show({    // show error message
+                                    title: 'Error',
+                                    msg: result.errorMsg
+                                });
+                            }
+                        },'json');
+                    }
+                });
+                $('#dg').datagrid('reload');    // reload the user data
+            }
+        }
+    </script>
+</body>
 </html>
