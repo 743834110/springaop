@@ -15,7 +15,11 @@
     <!--配置上下文环境监听器 初始化Spring运行环境-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:config/applicationContext.xml, classpath:config/application-quartz.xml</param-value>
+        <param-value>
+            classpath:config/applicationContext.xml,
+            classpath:config/application-quartz.xml,
+            classpath:config/application-mail.xml
+        </param-value>
     </context-param>
 
 

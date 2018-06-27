@@ -1,0 +1,20 @@
+2018-06-26 00:13:56,737-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 17:25:25,328-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 17:25:29,556-[TS] INFO main com.neuedu.RedisTest - org.springframework.data.redis.core.RedisTemplate@2a7b6f69
+2018-06-26 17:25:30,149-[TS] INFO main com.neuedu.RedisTest - 1
+2018-06-26 20:43:34,758-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 20:43:36,490-[TS] INFO main com.lingnan.mybatisdemo.view.JobController - Book{isbn='88', bookName='88', price=55.2, publishDate=Tue Jun 26 20:43:36 CST 2018, publisher='5', bookImage='null', category=Category{id=1, name='null', books=null}}
+2018-06-26 20:46:35,310-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 20:46:36,308-[TS] INFO main com.lingnan.mybatisdemo.view.JobController - Book{isbn='88', bookName='88', price=55.2, publishDate=Tue Jun 26 20:46:36 CST 2018, publisher='5', bookImage='null', category=Category{id=1, name='null', books=null}}
+2018-06-26 20:46:37,026-[TS] INFO main com.lingnan.mybatisdemo.view.JobController - 添加书籍
+2018-06-26 20:58:39,076-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 20:58:44,972-[TS] INFO main com.lingnan.view.JobControllerTest - {"success":false,"errMsg":"更新失败"}
+2018-06-26 21:00:42,047-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 21:01:08,715-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 21:01:11,102-[TS] INFO main com.lingnan.view.JobControllerTest - {"success":true}
+2018-06-26 21:17:16,708-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 21:17:19,766-[TS] INFO main com.lingnan.mybatisdemo.view.JobController - Book{isbn='88', bookName='88', price=0.0, publishDate=Tue Jun 26 21:17:19 CST 2018, publisher='5', bookImage='null', category=Category{id=1, name='null', books=null}}
+2018-06-26 21:17:21,279-[TS] INFO main com.lingnan.view.JobControllerTest - {"success":true}
+2018-06-26 21:28:13,323-[TS] INFO main org.hibernate.validator.internal.util.Version - HV000001: Hibernate Validator 5.4.2.Final
+2018-06-26 21:28:16,178-[TS] INFO main com.lingnan.mybatisdemo.view.JobController - 88
+2018-06-26 21:28:23,027-[TS] INFO main com.lingnan.view.JobControllerTest - {success : true}

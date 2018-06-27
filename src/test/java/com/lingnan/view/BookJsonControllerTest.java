@@ -2,7 +2,7 @@ package com.lingnan.view;
 
 import com.lingnan.mybatisdemo.bean.Book;
 import com.lingnan.mybatisdemo.bean.Category;
-import com.lingnan.mybatisdemo.view.JobController;
+import com.lingnan.mybatisdemo.view.BookJsonController;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,10 +14,10 @@ import java.util.Date;
 /**
  * Created by Administrator on 2018/6/26.
  */
-public class JobControllerTest {
+public class BookJsonControllerTest {
 
     private ApplicationContext context;
-    private JobController controller;
+    private BookJsonController controller;
 
     private Logger logger = Logger.getLogger(this.getClass());
 
@@ -25,7 +25,7 @@ public class JobControllerTest {
     public void init (){
         this.context = new ClassPathXmlApplicationContext("config/applicationContext.xml" ,
                 "config/application-mvc.xml", "config/application-quartz.xml");
-        this.controller = this.context.getBean(JobController.class);
+        this.controller = this.context.getBean(BookJsonController.class);
 
     }
 
@@ -44,7 +44,7 @@ public class JobControllerTest {
 
     @Test
     public void testDeleteBook(){
-        int isbn = 88;
+        String isbn = "88";
         String result = this.controller.deleteBook(isbn);
         this.logger.info(result);
 

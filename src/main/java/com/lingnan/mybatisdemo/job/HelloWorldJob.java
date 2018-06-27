@@ -18,7 +18,7 @@ public class HelloWorldJob implements Job{
 
         JobDetail jobDetail = context.getJobDetail();
         JobKey key = jobDetail.getKey();
-        this.logger.info(key.getName() + ":" + new Date());
+        this.logger.info(key.getName() + ":" + context.getFireTime());
 
 
     }

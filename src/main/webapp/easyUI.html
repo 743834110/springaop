@@ -148,7 +148,6 @@
                 $('#fm').form('load',row);
                 flashCategories(row)
                 $("#isbn").attr("readonly", true)
-
                 url = 'job/updateBook';
             }
         }
@@ -181,6 +180,7 @@
                     if (r){
                         console.log(row)
                         $.post('job/deleteBook',{isbn:row.isbn},function(result){
+
                             if (result.success){
                                 $('#dg').datagrid('reload');    // reload the user data
                             } else {

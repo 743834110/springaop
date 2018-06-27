@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="easyui/demo/demo.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+
+
+
+</head>
+<body>
+    <div id="w" class="easyui-window" title="请先登录" data-options="modal:true,closed:true,iconCls:'Lockgo',closable:false,minimizable:false" style="width:400px;padding:20px 70px 20px 70px;">
+
+        <form id="loginForm" action="job/login" method="post">
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" required  name="userName" id="userName" style="width:100%;height:30px;padding:12px" data-options="prompt:'登录用户名',iconCls:'icon-man',iconWidth:38">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" required  name="password" id="password" type="password" style="width:100%;height:30px;padding:12px" data-options="prompt:'登录密码',iconCls:'icon-lock',iconWidth:38">
+            </div>
+            <div style="margin-bottom:20px">
+                <input class="easyui-textbox" type="text" id="logyzm" style="width:50%;height:30px;padding:12px" data-options="prompt:'验证码'"> <a href="javascript:;" class="showcode" onclick="changeVeryfy()"><img style=" margin:0 0 0 3px ; vertical-align:middle; height:26px;" src="/index.php?s=/Xjadmin/verifyCode"></a>
+            </div>
+            <div style="margin-bottom:20px">
+                <input type="checkbox" checked="checked" id="logrem">
+                <span>Remember me</span>
+            </div>
+            <div>
+                <a href="javascript:;" onclick="doLogin()" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" style="padding:5px 0px;width:100%;">
+                    <span style="font-size:14px;">登录</span>
+                </a>
+            </div>
+        </form>
+    </div>
+    <script>
+        function doLogin() {
+            var form = $("#loginForm")[0];
+
+            form.submit(function () {
+                alert('eeeeeeeeeee')
+            })
+        }
+        $(function(){
+            $('#w').window('open');
+
+
+        })
+    </script>
+</body>
+</html>
+<!--title（标题） string（字符串） 窗口的标题。 New Window-->
+<!--collapsible（可折叠） boolean（布尔型） 定义是否显示折叠按钮。 true-->
+<!--minimizable（最小化） boolean（布尔型） 定义是否显示最小化按钮。 true-->
+<!--maximizable（最大化） boolean（布尔型） 定义是否显示最大化按钮。 true-->
+<!--closable（关闭） boolean（布尔型） 定义是否显示关闭按钮。 true-->
+<!--closed（已关闭） boolean（布尔型） 定义是否在初始化组件时关闭（隐藏）窗口 false-->
+<!--zIndex（堆叠顺序） number（数字） 窗口的堆叠顺序，从第一个窗口的zIndex值开始递增。 9000-->
+<!--draggable（可拖放） boolean（布尔型） 定义窗口是否可以被拖放。 true-->
+<!--resizable（可缩放） boolean（布尔型） 定义窗口是否可以被缩放。 true-->
+<!--shadow（阴影） boolean（布尔型） 如果设置为true，显示窗口的时候将显示阴影。 true-->
+<!--inline（行内显示） boolean（布尔型） 定义如何布局窗口，如果设置为true，窗口将显示在它的父容器中，否则将显示在所有元素的上面。 false-->
+<!--modal（遮罩） boolean（布尔型） 定义窗口是否带有遮罩效果。 true-->

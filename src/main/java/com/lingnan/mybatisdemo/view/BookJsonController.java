@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import sun.rmi.runtime.Log;
 
 import javax.persistence.Temporal;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +32,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("job")
-public class JobController {
+public class BookJsonController {
 
     private Logger logger = Logger.getLogger(this.getClass());
 
@@ -82,12 +85,12 @@ public class JobController {
 
         JobDetail newJob = this.context.getBean(JobDetail.class)
                 .getJobBuilder().withIdentity(jobKeyString).build();
-        Trigger trigger = this.context.getBean(Trigger.class);
-
+        Trigger trigger = this.context.getBean(CronTrigger.class)
+                .getTriggerBuilder()
+                .withIdentity(jobKeyString)
+                .build();
         this.scheduler.scheduleJob(newJob, trigger);
         this.scheduler.start();
-
-
         return "{success: true}";
     }
 
@@ -148,11 +151,11 @@ public class JobController {
 
     @RequestMapping("deleteBook")
     @ResponseBody
-    public String deleteBook( Integer isbn){
-        this.logger.info(isbn);
+    public String deleteBook(String isbn){
+        this.logger.info("eeeeeee");
 
 
-        int count = this.bookService.deleteByIsbnList(new String[] {isbn.toString()});
+        int count = this.bookService.deleteByIsbnList(new String[] {isbn});
         Map<String ,Object> result = new HashMap<>();
         if (count != 0){
             return "{success : true}";
@@ -162,4 +165,17 @@ public class JobController {
         return new Gson().toJson(result);
     }
 
+
+    @RequestMapping("login")
+    public void loginAction(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        this.logger.info(userName + "：" + password);
+        String basePath = request.getContextPath();
+        if (userName.equals(password))
+            response.sendRedirect(basePath + "/index.html");
+        else
+            response.sendRedirect(basePath + "/login.html");
+    }
 }
